@@ -35,7 +35,7 @@ services:
         volumes:
             - ai_hotel_data:/var/lib/postgresql/data
         ports:
-            - "8433:5433"
+            - "8433:5432"
         networks:
             - ai_hotel-net
         # setting some env vars to create the DB
