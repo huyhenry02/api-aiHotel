@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+    app:
+        build:
+            args:
+                user: duchuy
+                uid: 1222
+            context: ./
+            dockerfile: Dockerfile
+        image: ai_hotel
+        container_name: ai_hotel-api
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+        networks:
+            - ai_hotel-net
+    nginx:
+        image: nginx:alpine
+        container_name: ai_hotel-nginx
+        restart: unless-stopped
+        ports:
+            - "8122:80"
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d
+        networks:
+            - ai_hotel-net
+    db:
+        image: postgres:latest
+        container_name: ai_hotel-postgres
+        # we mount a datavolume to make sure we don't loose data
+        volumes:
+            - ai_hotel_data:/var/lib/postgresql/data
+        ports:
+            - "8433:5433"
+        networks:
+            - ai_hotel-net
+        # setting some env vars to create the DB
+        environment:
+            - POSTGRES_DB=ai_hotel
+            - POSTGRES_USER=ai_hotel
+            - POSTGRES_PASSWORD=ai_hotel
+        restart: always
+    redis:
+        image: redis:latest
+        container_name: ai_hotel-redis
+        ports:
+            - "7379:6380"
+        networks:
+            - ai_hotel-net
+#Docker Networks
+networks:
+    ai_hotel-net:
+        driver: bridge
+#Volumes
+volumes:
+    ai_hotel_data:
+        driver: local
