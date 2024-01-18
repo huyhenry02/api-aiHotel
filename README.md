@@ -5,7 +5,7 @@
 - To access database, please use credentials following:
 > Hostname: ai_hotel_postgres
 >
-> Port: 5433
+> Port: 8433
 >
 > Username: ai_hotel
 >
