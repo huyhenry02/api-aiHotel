@@ -1,0 +1,15 @@
+2024-01-30 10:23:29,139 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-01-30 10:23:29,140 INFO supervisord started with pid 1
+2024-01-30 10:23:30,145 INFO spawned: 'cron' with pid 7
+2024-01-30 10:23:30,157 INFO spawned: 'laravel-worker-db_00' with pid 8
+2024-01-30 10:23:30,162 INFO spawned: 'laravel-worker-db_01' with pid 9
+2024-01-30 10:23:30,166 INFO spawned: 'laravel-worker-db_02' with pid 10
+2024-01-30 10:23:30,173 INFO spawned: 'laravel-worker-db_03' with pid 11
+2024-01-30 10:23:30,178 INFO spawned: 'php' with pid 12
+2024-01-30 10:23:31,328 INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-01-30 10:23:31,329 INFO success: laravel-worker-db_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-01-30 10:23:31,329 INFO success: laravel-worker-db_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-01-30 10:23:31,329 INFO success: laravel-worker-db_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-01-30 10:23:31,329 INFO success: laravel-worker-db_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-01-30 10:23:31,329 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-01-30 10:25:49,469 INFO reaped unknown pid 57 (exit status 0)
