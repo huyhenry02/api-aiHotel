@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\User\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
+use OwenIt\Auditing\Auditable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditable
 {
+    use Auditable;
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -19,10 +20,20 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'role_type',
+        'address',
+        'phone',
         'email',
         'password',
+        'identification',
+        'age',
     ];
-
+    /**
+     * The primary key for the model.
+     *
+     * @var int
+     */
+    protected $primaryKey = 'id';
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -30,7 +41,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -39,7 +49,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 }

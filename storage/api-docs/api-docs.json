@@ -1,0 +1,153 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Api Documentation",
+        "description": "L5 Swagger",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0."
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8122",
+            "description": "Ai-Hotel API"
+        }
+    ],
+    "paths": {
+        "/api/auth/create-user": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Adds a new user",
+                "description": "Adds a new user",
+                "operationId": "createUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "email"
+                                            }
+                                        ]
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "role_type": {
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "identification": {
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Huy",
+                                    "email": "test@gmail.com",
+                                    "password": "12345678",
+                                    "role_type": "customer",
+                                    "address": "Ha Noi",
+                                    "phone": "0123456789",
+                                    "identification": "123456789",
+                                    "age": "20"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "signup successfully"
+                    },
+                    "422": {
+                        "description": "validate failed"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "user login",
+                "description": "user login",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "username": "admin@gmail.com",
+                                    "password": "Admin@123"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successfully"
+                    },
+                    "422": {
+                        "description": "login failed"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "user logout",
+                "description": "user logout",
+                "operationId": "logout",
+                "requestBody": {},
+                "responses": {
+                    "200": {
+                        "description": "Logout successfully"
+                    },
+                    "401": {
+                        "description": "Logout failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    }
+}
