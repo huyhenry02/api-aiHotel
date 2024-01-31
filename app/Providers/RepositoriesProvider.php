@@ -13,11 +13,10 @@ class RepositoriesProvider extends ServiceProvider
     {
         $repositories = [
             'User',
-            'Role',
         ];
         foreach ($repositories as $repository) {
-            $this->app->bind('App\Repositories\Interfaces\\' . $repository . 'Interface',
-                'App\Repositories\\' . $repository . 'Repository'
+            $this->app->bind('App\Modules\\' . $repository . '\Repositories\Interfaces\\' . $repository . 'Interface',
+                'App\Modules\\' . $repository . '\Repositories\\' . $repository . 'Repository'
             );
         }
 
