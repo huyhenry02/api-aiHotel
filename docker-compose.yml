@@ -1,12 +1,6 @@
 version: "3.8"
 services:
     app:
-        build:
-            args:
-                user: duchuy
-                uid: 1222
-            context: ./
-            dockerfile: Dockerfile
         image: ai_hotel
         container_name: ai_hotel-api
         restart: unless-stopped
