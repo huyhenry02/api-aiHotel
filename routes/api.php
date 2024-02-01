@@ -6,6 +6,7 @@ use Pusher\Pusher;
 
 require ('api/account.php');
 require ('api/example.php');
+require ('api/hotel.php');
 
 Route::get('/test-ws', function (Request $request) {
     RoomChannel::dispatch($request->room_id);
