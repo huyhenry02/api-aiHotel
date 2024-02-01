@@ -24,7 +24,7 @@ use Illuminate\Http\JsonResponse;
  *
  * @OA\Server(
  *      url=L5_SWAGGER_CONST_HOST,
- *      description="Wishcare API"
+ *      description="Ai-Hotel API"
  * )
  */
 
@@ -36,6 +36,7 @@ class ApiController extends Controller
      * @param $data
      * @param int $statusCode
      * @param array $headers
+     * @param string $message
      * @return JsonResponse
      */
 
