@@ -171,17 +171,6 @@ abstract class BaseRepository implements RepositoryInterface
         return false;
     }
 
-
-    /**
-     * Pagination
-     *
-     * @param int $perPage
-     */
-    public function paginate(int $perPage = DEFAULT_RECORDS_PER_PAGE)
-    {
-        return $this->_model->paginate($perPage);
-    }
-
     /**
      * get data with query
      * conditions like:
@@ -192,19 +181,16 @@ abstract class BaseRepository implements RepositoryInterface
      * ['a' => 'b']
      * ['a' => 'b', 'c' => 'd']
      *
-     * @param array  $columns
-     * @param array  $conditions
-     * @param string $orderBy
-     * @param int    $perPage
-     * @param bool   $softDelete
-     *
+     * @param array $columns
+     * @param array $conditions
+     * @param array $orderBy
+     * @param bool $withTrashed
      * @return mixed
      */
     public function getData(
         array $columns = ['*'],
         array $conditions = [],
         array $orderBy = ['created_at' => 'desc'],
-        int $perPage = GET_ALL_ITEMS,
         bool $withTrashed = false
     ): mixed
     {
@@ -216,10 +202,6 @@ abstract class BaseRepository implements RepositoryInterface
         $query = $this->checkCondition($query, $conditions);
         foreach ($orderBy as $key => $value) {
             $query = $query->orderBy($key, $value);
-        }
-
-        if ($perPage !== GET_ALL_ITEMS) {
-            return $query->paginate($perPage);
         }
         return $query->get();
     }

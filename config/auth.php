@@ -1,5 +1,7 @@
 <?php
 
+use App\Modules\User\Models\User;
+
 return [
 
     /*
@@ -43,7 +45,6 @@ return [
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
-            'hash' => false,
         ],
     ],
 
@@ -67,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Modules\User\Models\User::class,
+            'model' => User::class,
         ],
 
         // 'users' => [

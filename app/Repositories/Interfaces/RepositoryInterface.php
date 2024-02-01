@@ -49,26 +49,10 @@ interface RepositoryInterface
      */
     public function restore($id);
 
-    /**
-     * Pagination
-     * @param int $perPage
-     */
-    public function paginate(int $perPage = DEFAULT_RECORDS_PER_PAGE);
-
-    /**
-     * @param array  $columns
-     * @param array  $conditions
-     * @param array $orderBy
-     * @param int    $perPage
-     * @param bool   $withTrashed
-     *
-     * @return mixed
-     */
     public function getData(
         array $columns = ['*'],
         array $conditions = [],
         array $orderBy = ['created_at' => 'desc'],
-        int $perPage = GET_ALL_ITEMS,
         bool $withTrashed = false
     ): mixed;
 
@@ -76,6 +60,7 @@ interface RepositoryInterface
      * get first by condition
      * @param array $conditions
      * @param array $columns
+     * @param bool $withTrashed
      */
     public function getFirstRow(array $conditions, array $columns = ['*'], bool $withTrashed = false);
 

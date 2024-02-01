@@ -83,8 +83,7 @@ class UserController extends ApiController
      */
     public function createUser(CreateUserRequest $request): JsonResponse
     {
-        $currentUser = auth()->user();
-        dd($currentUser);
+        $currentUser = Auth::user();
         if ($request->role_type === RoleTypeEnum::EMPLOYEE) {
             if ($currentUser->role_type !== RoleTypeEnum::ADMIN) {
                 return $this->respondError('Only admins can create employees', 403);
@@ -149,14 +148,11 @@ class UserController extends ApiController
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-            $credentials = $request->only('email', 'password');
-            if (Auth::attempt($credentials)) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user();
                 $respData = [
-                    "data" => [
-                        "message" => 'Login successfully',
-                        'access_token' => $user->createToken('Ai-Hotel')->accessToken
-                    ]
+                    "message" => 'Login successfully',
+                    'access_token' => $user->createToken('Ai-Hotel')->accessToken,
                 ];
                 $resp = $this->respondSuccess($respData);
             } else {
@@ -196,5 +192,9 @@ class UserController extends ApiController
             $response = $this->respondError($e->getMessage());
         }
         return $response;
+    }
+    public function getUserInfo() {
+        $user = Auth::user();
+        dd($user);
     }
 }

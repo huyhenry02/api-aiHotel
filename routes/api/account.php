@@ -14,14 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group([
-    'prefix' => 'auth',
+    'prefix' => 'auth'
 ], function () {
     Route::post('login', [UserController::class, 'login']);
-    Route::post('create-user', [UserController::class, 'createUser']);
+    Route::post('signup', [UserController::class, 'signup']);
+
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
-        Route::post('logout', [UserController::class, 'logout']);
+        Route::get('logout', [UserController::class, 'logout']);
+        Route::get('user', [UserController::class, 'getUserInfo']);
     });
 });
 
