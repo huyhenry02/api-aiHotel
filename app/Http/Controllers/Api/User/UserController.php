@@ -21,7 +21,7 @@ class UserController extends ApiController
         $this->userRepo = $user;
 
     }
-    public function createEmployee(CreateUserRequest $request): JsonResponse
+    public function createUser(CreateUserRequest $request): JsonResponse
     {
         $currentUser = Auth::user();
         if ($request->role_type === RoleTypeEnum::EMPLOYEE) {
@@ -74,36 +74,5 @@ class UserController extends ApiController
         }
         return $response;
     }
-    public function login(LoginRequest $request): JsonResponse
-    {
-        try {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                $user = Auth::user();
-                $respData = [
-                    "message" => 'Login successfully',
-                    'access_token' => $user->createToken('Ai-Hotel')->accessToken,
-                ];
-                $resp = $this->respondSuccess($respData);
-            } else {
-                $resp = $this->respondFailedLogin();
-            }
-        } catch (\Exception $e) {
-            $resp = $this->respondError($e->getMessage(), $e->getCode());
-        }
-        return $resp;
-    }
-    public function logout(Request $request): JsonResponse
-    {
-        try {
-            $request->user()->token()->revoke();
-            $response =  $this->respondSuccessWithoutData();
-        } catch (\Exception $e) {
-            $response = $this->respondError($e->getMessage());
-        }
-        return $response;
-    }
-    public function getUserInfo() {
-        $user = Auth::user();
-        dd($user);
-    }
+
 }
