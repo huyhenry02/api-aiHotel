@@ -17,13 +17,14 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', [UserController::class, 'login']);
-    Route::post('signup', [UserController::class, 'signup']);
+    Route::post('sign-up-for-customer', [UserController::class, 'signUpForCustomer']);
 
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
         Route::get('logout', [UserController::class, 'logout']);
         Route::get('user', [UserController::class, 'getUserInfo']);
+        Route::post('create-employee', [UserController::class, 'createEmployee']);
     });
 });
 
