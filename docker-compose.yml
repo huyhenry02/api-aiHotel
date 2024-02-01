@@ -1,7 +1,9 @@
 version: "3.8"
 services:
     app:
-        image: ai_hotel
+        build:
+            context: ./
+            dockerfile: Dockerfile
         container_name: ai_hotel-api
         restart: unless-stopped
         working_dir: /var/www/
@@ -27,7 +29,7 @@ services:
         container_name: ai_hotel-postgres
         # we mount a datavolume to make sure we don't loose data
         volumes:
-            - ai_hotel_data:/var/lib/postgresql/data
+            - ./dbdata:/var/lib/postgresql/data
         ports:
             - "8431:5432"
         networks:
@@ -43,6 +45,17 @@ services:
         container_name: ai_hotel-redis
         ports:
             - "5379:6379"
+        networks:
+            - ai_hotel-net
+    soketi:
+        image: 'quay.io/soketi/soketi:latest-16-alpine'
+        container_name: ai_hotel-soketi
+        ports:
+            - '6001:6001'
+            - '9601:9601'
+        environment:
+            SOKETI_DEBUG: '1'
+            SOKETI_METRICS_SERVER_PORT: '9601'
         networks:
             - ai_hotel-net
 #Docker Networks
