@@ -71,6 +71,10 @@ class UserController extends ApiController
 
     public function getUserInfo(GetUserByUserIdRequest $request): JsonResponse
     {
+        $currentUser = Auth::user();
+        if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
+            return $this->respondError(__('messages.access_denied'));
+        }
         try {
             $user = $this->userRepo->find($request->user_id);
             $data = fractal($user, new UserTransformer())->toArray();
@@ -83,6 +87,10 @@ class UserController extends ApiController
 
     public function getListUser(ListUserRequest $request): JsonResponse
     {
+        $currentUser = Auth::user();
+        if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
+            return $this->respondError(__('messages.access_denied'));
+        }
         $perPage = $request->validated('per_page', 15);
         $type = $request->validated('type');
         $conditions = [];
@@ -95,6 +103,10 @@ class UserController extends ApiController
     }
     public function updateUser(UpdateUserRequest $request): JsonResponse
     {
+        $currentUser = Auth::user();
+        if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
+            return $this->respondError(__('messages.access_denied'));
+        }
         DB::beginTransaction();
         try {
             $user = $this->userRepo->find($request->user_id);
@@ -118,6 +130,10 @@ class UserController extends ApiController
     }
     public function deleteUser(GetUserByUserIdRequest $request): JsonResponse
     {
+        $currentUser = Auth::user();
+        if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
+            return $this->respondError(__('messages.access_denied'));
+        }
         $user = $this->userRepo->find($request->user_id);
         if ($user) {
             $user->delete();
