@@ -28,6 +28,11 @@ Route::group([
         Route::put('change-password', [AuthController::class, 'changePassUser'])->name('change-password');
         Route::get('logout', [AuthController::class, 'logout']);
         Route::post('create-user', [UserController::class, 'createUser']);
+        Route::get('my-information', [UserController::class, 'getMyInfo']);
+        Route::get('user-information{user_id?}', [UserController::class, 'getUserInfo']);
+        Route::get('list-user{per_page?}{page?}{type?}', [UserController::class, 'getListUser']);
+        Route::delete('delete-user', [UserController::class, 'deleteUser']);
+        Route::put('update-user', [UserController::class, 'updateUser']);
     });
 });
 

@@ -1,0 +1,28 @@
+<?php
+return [
+    'validation_error' => 'Lỗi xác thực thông tin form',
+    'not_found' => 'Không tìm thấy dữ liệu',
+    'access_denied' => "Bạn không có quyền quyền thực hiện chức năng này.",
+    'system_error' => 'Lỗi hệ thống',
+    'unauthenticated' => 'Tài khoản không được xác thực.',
+    'no_data' => 'Không có dữ liệu cần update.',
+    'change_fail' => 'Mật khẩu cũ không đúng',
+    'change_successfully' => 'Thay đổi mật khẩu thành công',
+    'update_fail' => 'Cập nhật thất bại',
+    'update_successfully' => 'Cập nhật thành công',
+    'delete_fail' => 'Xóa thất bại',
+    'delete_successfully' => 'Xóa thành công',
+    'media_required' => 'File media không được bỏ trống',
+    'send_email_successfully' => 'Gửi Email thành công',
+    'send_email_fail' => 'Gửi Email thất bại',
+    'reset_successfully' => 'Thay đổi mật khẩu thành công',
+    'token_invalid' => 'Mã thông báo đặt lại mật khẩu này không hợp lệ.',
+    'user' => [
+        'update_successfully' => 'Cập nhật người dùng thành công',
+        'update_fail' => 'Cập nhật người dùng thất bại',
+        'create_successfully' => 'Tạo mới người dùng thành công',
+        'create_fail' => 'Tạo mới người dùng thất bại',
+        'delete_successfully' => 'Xóa người dùng thành công',
+        'delete_fail' => 'Xóa người dùng thất bại',
+    ],
+];

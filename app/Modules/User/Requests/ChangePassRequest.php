@@ -8,6 +8,7 @@ use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Application;
 
+
 class ChangePassRequest extends CommonRequest
 {
     /**
@@ -30,5 +31,9 @@ class ChangePassRequest extends CommonRequest
             'new_password' => 'required|string|min:8|max:100',
             'password_confirm' => 'required|same:new_password'
         ];
+    }
+    public function attributes(): Application|array|string|Translator|ContractsApplication|null
+    {
+        return __('requests.ChangePassRequest');
     }
 }

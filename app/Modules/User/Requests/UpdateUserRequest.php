@@ -2,13 +2,14 @@
 
 namespace App\Modules\User\Requests;
 
+use App\Enums\RoleTypeEnum;
 use App\Http\Requests\CommonRequest;
 use Illuminate\Contracts\Foundation\Application as ContractsApplication;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Application;
 
-class ResetPassRequest extends CommonRequest
+class UpdateUserRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +26,21 @@ class ResetPassRequest extends CommonRequest
      */
     public function rules(): array
     {
+        $type = implode(',', RoleTypeEnum::values());
         return [
-            'token' => 'required|string',
-            'new_password' => 'required|string|min:8|max:100',
-            'password_confirm' => 'required|same:new_password'
+            'user_id' => 'required|exists:users,id',
+            'name' => 'string',
+            'role_type' => "string|in:$type",
+            'address' => 'string',
+            'phone' => 'string|min:10|unique:users,phone',
+            'identification' =>'string|unique:users,identification',
+            'password' => 'string|max:255',
+            'email' => 'email|string|unique:users,email',
+            'age' => 'numeric',
         ];
     }
     public function attributes(): Application|array|string|Translator|ContractsApplication|null
     {
-        return __('requests.ResetPassRequest');
+        return __('requests.UpdateUserRequest');
     }
 }
