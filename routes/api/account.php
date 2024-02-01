@@ -25,6 +25,7 @@ Route::group([
     Route::group([
         'middleware' => 'auth:api'
     ], function () {
+        Route::put('change-password', [AuthController::class, 'changePassUser'])->name('change-password');
         Route::get('logout', [AuthController::class, 'logout']);
         Route::post('create-user', [UserController::class, 'createUser']);
     });

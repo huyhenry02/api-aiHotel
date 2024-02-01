@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Jobs\SendEmailJob;
 use App\Mail\CommonMail;
 use App\Modules\User\Repositories\Interfaces\UserInterface;
+use App\Modules\User\Requests\ChangePassRequest;
 use App\Modules\User\Requests\LoginRequest;
 use App\Modules\User\Requests\ResetPassRequest;
 use App\Modules\User\Requests\SendEmailRequest;
@@ -61,7 +62,7 @@ class AuthController extends ApiController
         try {
             $email = $request->validated('email');
             $result = $this->userRepo->findUserAndSendMail($email);
-            $resetLink = 'http://localhost:3000' . '/reset-password?token=' . $result['token'];
+            $resetLink = env('FRONTEND_PATH') . '/reset-password?token=' . $result['token'];
             $data = [
                 'resetLink' => $resetLink,
             ];
@@ -91,7 +92,27 @@ class AuthController extends ApiController
             $postData = $request->validated();
             $result = $this->userRepo->resetPasswordWithToken($postData['token'], $postData['new_password']);
             $result['resetToken']->delete();
-            $resp = $this->respondSuccessWithoutData(__('messages.reset_successfully'));
+            $resp = $this->respondSuccessWithoutData('reset_successfully');
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            $resp = $this->respondError($e->getMessage());
+        }
+        return $resp;
+    }
+    public function changePassUser(ChangePassRequest $request): JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $request->validated('old_password');
+            $user = auth()->user();
+
+            if (!$user || !password_verify($request->validated('old_password'), $user->password)) {
+                throw new Exception(__('messages.change_fail'));
+            }
+            $this->userRepo->changePassword($user, bcrypt($request->validated('new_password')));
+            $resp = $this->respondSuccessWithoutData('messages.change_successfully');
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

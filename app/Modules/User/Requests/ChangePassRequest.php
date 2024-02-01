@@ -31,9 +31,4 @@ class ChangePassRequest extends CommonRequest
             'password_confirm' => 'required|same:new_password'
         ];
     }
-
-    public function attributes(): Application|array|string|Translator|ContractsApplication|null
-    {
-        return __('requests.ChangePassRequest');
-    }
 }
