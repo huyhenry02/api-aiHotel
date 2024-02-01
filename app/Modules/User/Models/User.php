@@ -3,6 +3,7 @@
 namespace App\Modules\User\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Auditable;
@@ -11,6 +12,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditable
 {
     use Auditable;
+    use SoftDeletes;
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

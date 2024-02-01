@@ -172,6 +172,17 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /**
+     * Pagination
+     *
+     * @param int $perPage
+     * @return mixed
+     */
+    public function paginate(int $perPage = 15)
+    {
+        return $this->_model->paginate($perPage);
+    }
+
+    /**
      * get data with query
      * conditions like:
      * b is =, >, <, like,...
@@ -184,6 +195,7 @@ abstract class BaseRepository implements RepositoryInterface
      * @param array $columns
      * @param array $conditions
      * @param array $orderBy
+     * @param int $perPage
      * @param bool $withTrashed
      * @return mixed
      */
@@ -191,6 +203,7 @@ abstract class BaseRepository implements RepositoryInterface
         array $columns = ['*'],
         array $conditions = [],
         array $orderBy = ['created_at' => 'desc'],
+        int $perPage = -1,
         bool $withTrashed = false
     ): mixed
     {
@@ -198,10 +211,12 @@ abstract class BaseRepository implements RepositoryInterface
         if ($withTrashed) {
             $query = $query->withTrashed();
         }
-
         $query = $this->checkCondition($query, $conditions);
         foreach ($orderBy as $key => $value) {
             $query = $query->orderBy($key, $value);
+        }
+        if ($perPage !== -1) {
+            return $query->paginate($perPage);
         }
         return $query->get();
     }
@@ -216,7 +231,7 @@ abstract class BaseRepository implements RepositoryInterface
      * ['a' => 'b', 'c' => 'd']
      * @param array $conditions
      * @param array $columns
-     *
+     * @param bool $withTrashed
      * @return mixed
      */
     public function getFirstRow(array $conditions, array $columns = ['*'], bool $withTrashed = false): mixed

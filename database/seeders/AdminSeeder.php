@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
             DB::beginTransaction();
             $this->userRepo->create([
                 'name' => 'Super Admin',
-                'role_type' => RoleTypeEnum::ADMIN,
+                'role_type' => RoleTypeEnum::ADMIN->value,
                 'address' => 'Ai-Hotel',
                 'phone' => '0123456789',
                 'email' => 'admin@gmail.com',

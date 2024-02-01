@@ -92,7 +92,7 @@ class AuthController extends ApiController
             $postData = $request->validated();
             $result = $this->userRepo->resetPasswordWithToken($postData['token'], $postData['new_password']);
             $result['resetToken']->delete();
-            $resp = $this->respondSuccessWithoutData('reset_successfully');
+            $resp = $this->respondSuccessWithoutData(__('messages.reset_successfully'));
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -111,7 +111,7 @@ class AuthController extends ApiController
                 throw new Exception(__('messages.change_fail'));
             }
             $this->userRepo->changePassword($user, bcrypt($request->validated('new_password')));
-            $resp = $this->respondSuccessWithoutData('messages.change_successfully');
+            $resp = $this->respondSuccessWithoutData(__('messages.change_successfully'));
 
             DB::commit();
         } catch (Exception $e) {

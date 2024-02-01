@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RoleTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,12 +17,13 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('email', 255)->unique();
             $table->string('address', 255);
-            $table->enum('role_type', ['admin', 'employee', 'customer']);
+            $table->enum('role_type', RoleTypeEnum::values());
             $table->string('password', 255);
             $table->string('phone', 255);
             $table->string('identification', 255);
             $table->integer('age');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
