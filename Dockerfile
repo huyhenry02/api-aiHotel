@@ -1,10 +1,6 @@
 # Use an official PHP image as the base image
 FROM php:8.3-fpm
 
-# Arguments defined in dev.yml
-ARG user
-ARG uid
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
