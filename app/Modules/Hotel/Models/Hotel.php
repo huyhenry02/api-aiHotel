@@ -3,6 +3,8 @@
 namespace App\Modules\Hotel\Models;
 
 use App\Models\BaseModel;
+use App\Modules\File\Models\File;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hotel extends BaseModel
@@ -19,7 +21,6 @@ class Hotel extends BaseModel
     protected $fillable = [
         'name',
         'address',
-        'banner',
         'description',
     ];
 
@@ -32,4 +33,8 @@ class Hotel extends BaseModel
         'created_at',
         'updated_at',
     ];
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'file_model');
+    }
 }

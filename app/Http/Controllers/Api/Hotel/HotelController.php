@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Hotel;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\PaginationRequest;
+use App\Modules\File\Repositories\Interfaces\FileInterface;
+use App\Modules\Hotel\Models\Hotel;
 use App\Modules\Hotel\Repositories\Interfaces\HotelInterface;
 use App\Modules\Hotel\Requests\CreateHotelRequest;
 use App\Modules\Hotel\Requests\GetOneHotelRequest;
@@ -16,10 +18,12 @@ use Illuminate\Support\Facades\DB;
 class HotelController extends ApiController
 {
     protected HotelInterface $hotelRepo;
+    protected FileInterface $fileRepo;
 
-    public function __construct(HotelInterface $hotel)
+    public function __construct(HotelInterface $hotel, FileInterface $file)
     {
         $this->hotelRepo = $hotel;
+        $this->fileRepo = $file;
     }
     public function getListHotels(PaginationRequest $request): JsonResponse
     {
@@ -36,8 +40,8 @@ class HotelController extends ApiController
     public function getOneHotel(GetOneHotelRequest $request): JsonResponse
     {
         try {
-            $hotel = $this->hotelRepo->find($request['hotel_id']);
-            $data = fractal($hotel, new HotelTransformer())->toArray();
+            $hotel = $this->hotelRepo->findWithBanner($request['hotel_id']);
+            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
@@ -50,7 +54,12 @@ class HotelController extends ApiController
            DB::beginTransaction();
             $postData = $request->validated();
             $hotel = $this->hotelRepo->create($postData);
-            $data = fractal($hotel, new HotelTransformer())->toArray();
+            if ($request->hasFile('banner')) {
+                $file = $request->file('banner');
+                $filePath = $this->fileRepo->uploadFile($file, Hotel::class, $hotel->id, 'banner');
+                $postData['banner'] = $filePath;
+            }
+            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {
