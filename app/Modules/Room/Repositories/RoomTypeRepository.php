@@ -19,12 +19,4 @@ class RoomTypeRepository extends BaseRepository implements RoomTypeInterface
     {
         return RoomType::class;
     }
-    public function getLastRoomOnFloor($floorNumber)
-    {
-        $lastRoom = $this->model
-            ->where('code', 'LIKE', $floorNumber . '%')
-            ->orderBy('code', 'desc')
-            ->first();
-        return $lastRoom;
-    }
 }
