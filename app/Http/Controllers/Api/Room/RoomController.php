@@ -48,17 +48,8 @@ class RoomController extends ApiController
             $room = $this->roomRepo->create($postData);
             $floorNumber = $postData['floor'];
             $lastRoom = $this->roomRepo->getLastRoomOnFloor($floorNumber);
-            if (!$lastRoom) {
-                $room->code = $floorNumber . '01';
-                $room->save();
-            } else {
-                $lastRoomCode = $lastRoom->code;
-                $lastRoomNumber = (int)substr($lastRoomCode, -2);
-                $newRoomNumber = $lastRoomNumber + 1;
-                $newRoomNumber = str_pad($newRoomNumber, 2, '0', STR_PAD_LEFT);
-                $room->code = $floorNumber . $newRoomNumber;
-                $room->save();
-            }
+            $this->roomRepo->generateCodeRoom($lastRoom, $floorNumber, $room);
+            $room->save();
             DB::commit();
             $data = fractal($room, new RoomTransformer())->toArray();
             return $this->respondSuccess($data);
@@ -100,16 +91,7 @@ class RoomController extends ApiController
             if (isset($postData['floor']) && $postData['floor'] != $room->floor) {
                 $room->floor = $postData['floor'];
                 $lastRoom = $this->roomRepo->getLastRoomOnFloor($room->floor);
-                if (!$lastRoom) {
-                    $room->code = $room->floor . '01';
-                } else {
-                    $lastRoomCode = $lastRoom->code;
-                    $lastRoomNumber = (int)substr($lastRoomCode, -2);
-                    $newRoomNumber = $lastRoomNumber + 1;
-                    $newRoomNumber = str_pad($newRoomNumber, 2, '0', STR_PAD_LEFT);
-                    $room->code = $room->floor . $newRoomNumber;
-                }
-                $room->save();
+                $this->roomRepo->generateCodeRoom($lastRoom, $room->floor, $room);
             }
             $room->update($postData);
             $data = fractal($room, new RoomTransformer())->toArray();
