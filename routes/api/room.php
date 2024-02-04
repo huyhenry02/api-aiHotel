@@ -30,6 +30,9 @@ Route::group([
     Route::group([
         'prefix' => 'room'], function () {
         Route::post('create', [RoomController::class, 'createRoom']);
+        Route::post('update', [RoomController::class, 'updateRoom']);
+        Route::get('get-list{room_type_id?}{hotel_id?}{floor?}', [RoomController::class, 'getListRoom']);
+        Route::delete('delete', [RoomController::class, 'deleteRoom']);
     });
 });
 
