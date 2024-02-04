@@ -41,7 +41,7 @@ class RoomController extends ApiController
 
     public function createRoom(CreateRoomRequest $request): JsonResponse
     {
-        try{
+        try {
             DB::beginTransaction();
             $postData = $request->validated();
             $postData['code'] = 0;
@@ -51,7 +51,7 @@ class RoomController extends ApiController
             if (!$lastRoom) {
                 $room->code = $floorNumber . '01';
                 $room->save();
-            }else{
+            } else {
                 $lastRoomCode = $lastRoom->code;
                 $lastRoomNumber = (int)substr($lastRoomCode, -2);
                 $newRoomNumber = $lastRoomNumber + 1;
@@ -68,6 +68,7 @@ class RoomController extends ApiController
         }
         return $response;
     }
+
     public function deleteRoom(GetOneRoomRequest $request): JsonResponse
     {
         try {
@@ -80,12 +81,13 @@ class RoomController extends ApiController
             $room->delete();
             $response = $this->respondSuccess(__('messages.delete_successfully'));
             DB::commit();
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->respondError($e->getMessage());
         }
         return $response;
     }
+
     public function updateRoom(UpdateRoomRequest $request): JsonResponse
     {
         try {
@@ -113,12 +115,13 @@ class RoomController extends ApiController
             $data = fractal($room, new RoomTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->respondError($e->getMessage());
         }
         return $response;
     }
+
     public function getListRoom(GetListRoomRequest $request): JsonResponse
     {
         try {
@@ -136,7 +139,7 @@ class RoomController extends ApiController
             $rooms = $this->roomRepo->getByParams(params: $conditions);
             $data = fractal($rooms, new RoomTransformer())->toArray();
             $response = $this->respondSuccess($data);
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
         }
         return $response;

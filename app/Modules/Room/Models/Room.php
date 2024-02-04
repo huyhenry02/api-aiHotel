@@ -32,10 +32,12 @@ class Room extends BaseModel
         'created_at',
         'updated_at',
     ];
+
     public function roomType(): BelongsTo
     {
         return $this->belongsTo(RoomType::class, 'room_type_id');
     }
+
     public function hotel(): BelongsTo
     {
         return $this->belongsTo(Hotel::class, 'hotel_id');

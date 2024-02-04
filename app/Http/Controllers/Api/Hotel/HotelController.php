@@ -21,10 +21,11 @@ class HotelController extends ApiController
     {
         $this->hotelRepo = $hotel;
     }
+
     public function getListHotels(PaginationRequest $request): JsonResponse
     {
         try {
-            $postData = $request->validated('per_page',15);
+            $postData = $request->validated('per_page', 15);
             $hotels = $this->hotelRepo->getData(perPage: $postData);
             $data = fractal($hotels, new HotelTransformer())->toArray();
             $response = $this->respondSuccess($data);
@@ -33,6 +34,7 @@ class HotelController extends ApiController
         }
         return $response;
     }
+
     public function getOneHotel(GetOneHotelRequest $request): JsonResponse
     {
         try {
@@ -47,10 +49,11 @@ class HotelController extends ApiController
         }
         return $response;
     }
+
     public function createHotel(CreateHotelRequest $request): JsonResponse
     {
         try {
-           DB::beginTransaction();
+            DB::beginTransaction();
             $postData = $request->validated();
             $room_types = $postData['room_types'];
             $hotel = $this->hotelRepo->create($postData);
@@ -64,6 +67,7 @@ class HotelController extends ApiController
         }
         return $response;
     }
+
     public function updateHotel(UpdateHotelRequest $request): JsonResponse
     {
 
@@ -86,6 +90,7 @@ class HotelController extends ApiController
         }
         return $response;
     }
+
     public function deleteHotel(GetOneHotelRequest $request): JsonResponse
     {
         try {
