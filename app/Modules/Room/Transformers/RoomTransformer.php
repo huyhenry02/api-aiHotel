@@ -14,7 +14,19 @@ class RoomTransformer extends TransformerAbstract
             'id' => $room->id,
             'code' => $room->code ?? '',
             'floor' => $room->floor ?? '',
-            'room_type' => $room->description ?? '',
+            'hotel' => [
+                'id' => $room->hotel->id,
+                'name' => $room->hotel->name,
+                'address' => $room->hotel->address,
+                'description' => $room->hotel->description,
+            ],
+            'room_type' => [
+                'id' => $room->roomType->id,
+                'name' => $room->roomType->name,
+                'description' => $room->roomType->description,
+                'price' => $room->roomType->price,
+            ],
         ];
     }
+
 }

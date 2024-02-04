@@ -29,6 +29,7 @@ Route::group([
     });
     Route::group([
         'prefix' => 'room'], function () {
+        Route::post('create', [RoomController::class, 'createRoom']);
     });
 });
 
