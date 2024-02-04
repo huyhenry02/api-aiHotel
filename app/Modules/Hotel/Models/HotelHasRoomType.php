@@ -3,12 +3,14 @@
 namespace App\Modules\Hotel\Models;
 
 use App\Models\BaseModel;
+use App\Modules\Room\Models\RoomType;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HotelHasRoomType extends BaseModel
 {
 
-    public $table = 'hotel_has_room_type';
+    public $table = 'hotel_has_room_types';
     /**
      * The attributes that are mass assignable.
      *
@@ -29,4 +31,8 @@ class HotelHasRoomType extends BaseModel
         'created_at',
         'updated_at',
     ];
+    public function hotel(): belongsToMany
+    {
+        return $this->belongsToMany(Hotel::class);
+    }
 }

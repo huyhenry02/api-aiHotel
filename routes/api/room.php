@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Hotel\HotelController;
 use App\Http\Controllers\Api\Room\RoomController;
+use App\Http\Controllers\Api\Room\RoomTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,12 +19,16 @@ Route::group([
     'prefix' => 'room',
     'middleware' => 'auth:api'
 ], function () {
-   Route::group([
-    'prefix' => 'room-type',
-    'middleware' => 'auth:api'], function () {
-       Route::post('create', [RoomController::class, 'createRoomType']);
-       Route::get('get-list', [RoomController::class, 'getRoomTypes']);
-       Route::delete('get-one{room_type_id?}', [RoomController::class, 'getOneRoomType']);
+    Route::group([
+        'prefix' => 'room-type'], function () {
+        Route::post('create', [RoomTypeController::class, 'createRoomType']);
+        Route::post('update', [RoomTypeController::class, 'updateRoomType']);
+        Route::get('get-list', [RoomTypeController::class, 'getRoomTypes']);
+        Route::get('get{room_type_id?}', [RoomTypeController::class, 'getOneRoomType']);
+        Route::delete('delete{room_type_id?}', [RoomTypeController::class, 'deleteRoomType']);
+    });
+    Route::group([
+        'prefix' => 'room'], function () {
     });
 });
 

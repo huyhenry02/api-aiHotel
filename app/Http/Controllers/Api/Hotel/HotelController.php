@@ -37,6 +37,9 @@ class HotelController extends ApiController
     {
         try {
             $hotel = $this->hotelRepo->find($request['hotel_id']);
+            if (!$hotel) {
+                throw new Exception(__('messages.not_found'));
+            }
             $data = fractal($hotel, new HotelTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
@@ -49,7 +52,9 @@ class HotelController extends ApiController
         try {
            DB::beginTransaction();
             $postData = $request->validated();
+            $room_types = $postData['room_types'];
             $hotel = $this->hotelRepo->create($postData);
+            $hotel->roomTypes()->sync($room_types);
             $data = fractal($hotel, new HotelTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
@@ -64,9 +69,13 @@ class HotelController extends ApiController
 
         try {
             DB::beginTransaction();
-            $hotel = $this->hotelRepo->find($request['hotel_id']);
             $postData = $request->validated();
+            $hotel = $this->hotelRepo->find($postData['hotel_id']);
+            if (!$hotel) {
+                return $this->respondError(__('messages.not_found'));
+            }
             $hotel->fill($postData);
+            $hotel->roomTypes()->sync($postData['room_types']);
             $hotel->save();
             $data = fractal($hotel, new HotelTransformer())->toArray();
             $response = $this->respondSuccess($data);
@@ -83,6 +92,7 @@ class HotelController extends ApiController
             DB::beginTransaction();
             $hotel = $this->hotelRepo->find($request['hotel_id']);
             $hotel->delete();
+            $hotel->roomTypes()->detach();
             $response = $this->respondSuccess(__('messages.delete_successfully'));
             DB::commit();
         } catch (Exception $e) {

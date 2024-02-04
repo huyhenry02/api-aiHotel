@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('code',255);
             $table->integer('floor');
             $table->unsignedBigInteger('room_type_id');
+            $table->foreign('room_type_id')->references('id')->on('room_types');
+            $table->unsignedBigInteger('hotel_id');
+            $table->foreign('hotel_id')->references('id')->on('hotels');
             $table->timestamps();
         });
     }

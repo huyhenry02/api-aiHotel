@@ -10,6 +10,7 @@ use App\Modules\Room\Repositories\Interfaces\RoomInterface;
 use App\Modules\Room\Repositories\Interfaces\RoomTypeInterface;
 use App\Modules\Room\Requests\CreateRoomTypeRequest;
 use App\Modules\Room\Requests\GetOneRoomTypeRequest;
+use App\Modules\Room\Requests\UpdateRoomTypeRequest;
 use App\Modules\Room\Transformers\RoomTypeTransformer;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -33,46 +34,4 @@ class RoomController extends ApiController
 
     }
 
-    public function createRoomType(CreateRoomTypeRequest $request): JsonResponse
-    {
-        try {
-            DB::beginTransaction();
-            $data = $request->validated();
-            $roomType = $this->roomTypeRepo->create($data);
-            DB::commit();
-            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
-            $response = $this->respondSuccess($data);
-        } catch (Exception $e) {
-            DB::rollBack();
-            $response = $this->respondError($e->getMessage());
-        }
-        return $response;
-    }
-    public function getOneRoomType(GetOneRoomTypeRequest $request): JsonResponse
-    {
-        try {
-            $data = $request->validated();
-            $roomType = $this->roomTypeRepo->find($data['id']);
-            if (!$roomType) {
-                throw new Exception('Room type not found');
-            }
-            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
-            $response = $this->respondSuccess($data);
-        } catch (Exception $e) {
-            $response = $this->respondError($e->getMessage());
-        }
-        return $response;
-    }
-    public function getRoomTypes(PaginationRequest $request): JsonResponse
-    {
-        try {
-            $postData = $request->validated('per_page', '15');
-            $roomTypes = $this->roomTypeRepo->getData(perPage: $postData);
-            $data = fractal($roomTypes, new RoomTypeTransformer())->toArray();
-            $response = $this->respondSuccess($data);
-        } catch (Exception $e) {
-            $response = $this->respondError($e->getMessage());
-        }
-        return $response;
-    }
 }
