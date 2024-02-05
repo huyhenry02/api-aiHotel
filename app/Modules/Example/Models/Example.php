@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Modules\Hotel\Models;
+namespace App\Modules\Example\Models;
 
 use App\Models\BaseModel;
-use App\Modules\Room\Models\RoomType;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Hotel extends BaseModel
+class Example extends BaseModel
 {
-    public $table = 'hotels';
+    use SoftDeletes;
+
+    public $table = 'examples';
     /**
      * The attributes that are mass assignable.
      *
@@ -17,9 +17,7 @@ class Hotel extends BaseModel
      */
 
     protected $fillable = [
-        'name',
-        'address',
-        'description',
+//
     ];
 
     /**
@@ -31,8 +29,4 @@ class Hotel extends BaseModel
         'created_at',
         'updated_at',
     ];
-    public function roomTypes(): BelongsToMany
-    {
-        return $this->belongsToMany(RoomType::class,'hotel_has_room_types', 'hotel_id', 'room_type_id');
-    }
 }

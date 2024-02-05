@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->string('address', 255);
-            $table->string('banner', 255)->nullable();
             $table->string('description', 255)->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

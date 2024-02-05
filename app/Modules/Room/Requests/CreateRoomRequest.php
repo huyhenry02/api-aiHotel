@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\Hotel\Requests;
+namespace App\Modules\Room\Requests;
 
 use App\Http\Requests\CommonRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class UpdateHotelRequest extends CommonRequest
+class CreateRoomRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class UpdateHotelRequest extends CommonRequest
     {
         return [
             'hotel_id' => 'required|integer',
-            'name' => 'string|max:255',
-            'address' => 'string|max:255',
-            'banner' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:255',
+            'room_type_id' => 'required|integer',
+            'floor' => 'required|integer',
+            'code' => 'string',
         ];
     }
 }

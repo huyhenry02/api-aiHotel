@@ -13,7 +13,15 @@ class HotelTransformer extends TransformerAbstract
             'id' => $hotel->id,
             'name' => $hotel->name ?? '',
             'address' => $hotel->address ?? '',
-            'banner' => $hotel->banner ?? '',
+            'room_types' => $hotel->roomTypes->map(function ($roomType) {
+                return [
+                    'id' => $roomType->id,
+                    'name' => $roomType->name,
+                    'code' => $roomType->code,
+                    'description' => $roomType->description,
+                    'price' => $roomType->price,
+                ];
+            }),
             'description' => $hotel->description ?? '',
         ];
     }
