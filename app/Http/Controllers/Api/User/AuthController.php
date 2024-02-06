@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends ApiController
 {
     protected UserInterface $userRepo;
+
     /**
      * @param UserInterface $user
      */
@@ -28,6 +29,7 @@ class AuthController extends ApiController
     {
         $this->userRepo = $user;
     }
+
     public function login(LoginRequest $request): JsonResponse
     {
         try {
@@ -46,16 +48,18 @@ class AuthController extends ApiController
         }
         return $resp;
     }
+
     public function logout(Request $request): JsonResponse
     {
         try {
             $request->user()->token()->revoke();
-            $response =  $this->respondSuccessWithoutData();
+            $response = $this->respondSuccessWithoutData();
         } catch (\Exception $e) {
             $response = $this->respondError($e->getMessage());
         }
         return $response;
     }
+
     public function sendResetPasswordEmail(SendEmailRequest $request): JsonResponse
     {
         DB::beginTransaction();
@@ -85,6 +89,7 @@ class AuthController extends ApiController
         }
         return $resp;
     }
+
     public function resetPassword(ResetPassRequest $request): JsonResponse
     {
         DB::beginTransaction();
@@ -100,6 +105,7 @@ class AuthController extends ApiController
         }
         return $resp;
     }
+
     public function changePassUser(ChangePassRequest $request): JsonResponse
     {
         DB::beginTransaction();

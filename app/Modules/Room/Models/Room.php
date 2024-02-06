@@ -4,7 +4,9 @@ namespace App\Modules\Room\Models;
 
 use App\Models\BaseModel;
 use App\Modules\Hotel\Models\Hotel;
+use App\Modules\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Room extends BaseModel
@@ -41,5 +43,9 @@ class Room extends BaseModel
     public function hotel(): BelongsTo
     {
         return $this->belongsTo(Hotel::class, 'hotel_id');
+    }
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'room_id');
     }
 }

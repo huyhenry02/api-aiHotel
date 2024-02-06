@@ -26,6 +26,7 @@ class RoomRepository extends BaseRepository implements RoomInterface
             ->orderBy('code', 'desc')
             ->first();
     }
+
     public function generateCodeRoom($lastRoom, $floorNumber, $room): void
     {
         if (!$lastRoom) {

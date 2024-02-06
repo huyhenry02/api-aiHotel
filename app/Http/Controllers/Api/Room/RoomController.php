@@ -41,9 +41,9 @@ class RoomController extends ApiController
 
     public function createRoom(CreateRoomRequest $request): JsonResponse
     {
+        $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $postData['code'] = 0;
             $room = $this->roomRepo->create($postData);
             $floorNumber = $postData['floor'];
@@ -62,9 +62,9 @@ class RoomController extends ApiController
 
     public function deleteRoom(GetOneRoomRequest $request): JsonResponse
     {
-        try {
+        $postData = $request->validated();
+try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $room = $this->roomRepo->find($postData['room_id']);
             if (!$room) {
                 return $this->respondError(__('messages.room_not_found'));
@@ -81,17 +81,12 @@ class RoomController extends ApiController
 
     public function updateRoom(UpdateRoomRequest $request): JsonResponse
     {
-        try {
+        $postData = $request->validated();
+try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $room = $this->roomRepo->find($postData['room_id']);
             if (!$room) {
                 return $this->respondError(__('messages.room_not_found'));
-            }
-            if (isset($postData['floor']) && $postData['floor'] != $room->floor) {
-                $room->floor = $postData['floor'];
-                $lastRoom = $this->roomRepo->getLastRoomOnFloor($room->floor);
-                $this->roomRepo->generateCodeRoom($lastRoom, $room->floor, $room);
             }
             $room->update($postData);
             $data = fractal($room, new RoomTransformer())->toArray();
