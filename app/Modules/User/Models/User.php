@@ -2,7 +2,9 @@
 
 namespace App\Modules\User\Models;
 
+use App\Modules\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,4 +55,8 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
     protected $casts = [
         'password' => 'hashed',
     ];
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'user_id');
+    }
 }

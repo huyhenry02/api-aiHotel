@@ -25,4 +25,7 @@ return [
         'delete_successfully' => 'Xóa người dùng thành công',
         'delete_fail' => 'Xóa người dùng thất bại',
     ],
+    'reservation_not_processing' => 'Đơn đặt phòng không đuược check in',
+    'reservation_rejected' => 'Đơn đặt phòng bị đã hủy',
+
 ];

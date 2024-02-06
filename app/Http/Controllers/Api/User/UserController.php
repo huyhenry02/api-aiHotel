@@ -31,9 +31,9 @@ class UserController extends ApiController
         if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
             return $this->respondError(__('messages.access_denied'));
         }
+        $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $user = $this->userRepo->create($postData);
             $data = fractal($user, new UserTransformer())->toArray();
             $response = $this->respondSuccess($data);
@@ -47,11 +47,12 @@ class UserController extends ApiController
 
     public function signUpForCustomer(CreateUserRequest $request): JsonResponse
     {
+        $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $postData['role_type'] = RoleTypeEnum::CUSTOMER->value;
             $user = $this->userRepo->create($postData);
+            Auth::login($user);
             $data = fractal($user, new UserTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
@@ -94,13 +95,14 @@ class UserController extends ApiController
         $perPage = $request->validated('per_page', 15);
         $type = $request->validated('type');
         $conditions = [];
-        if ($type){
-        $conditions['role_type'] = $request->validated('type');
+        if ($type) {
+            $conditions['role_type'] = $request->validated('type');
         }
         $users = $this->userRepo->getData(['*'], $conditions, ['created_at' => 'desc'], $perPage);
         $data = fractal($users, new UserTransformer())->toArray();
         return $this->respondSuccess($data);
     }
+
     public function updateUser(UpdateUserRequest $request): JsonResponse
     {
         $currentUser = Auth::user();
@@ -128,6 +130,7 @@ class UserController extends ApiController
         }
         return $resp;
     }
+
     public function deleteUser(GetUserByUserIdRequest $request): JsonResponse
     {
         $currentUser = Auth::user();

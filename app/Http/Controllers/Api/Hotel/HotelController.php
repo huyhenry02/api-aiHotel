@@ -52,9 +52,9 @@ class HotelController extends ApiController
 
     public function createHotel(CreateHotelRequest $request): JsonResponse
     {
+        $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $room_types = $postData['room_types'];
             $hotel = $this->hotelRepo->create($postData);
             $hotel->roomTypes()->sync($room_types);
@@ -71,9 +71,9 @@ class HotelController extends ApiController
     public function updateHotel(UpdateHotelRequest $request): JsonResponse
     {
 
+        $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $hotel = $this->hotelRepo->find($postData['hotel_id']);
             if (!$hotel) {
                 return $this->respondError(__('messages.not_found'));

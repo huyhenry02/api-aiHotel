@@ -8,3 +8,4 @@ require ('api/account.php');
 require ('api/example.php');
 require ('api/hotel.php');
 require ('api/room.php');
+require ('api/reservation.php');

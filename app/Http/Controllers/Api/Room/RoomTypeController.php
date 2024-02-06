@@ -69,9 +69,9 @@ class RoomTypeController extends ApiController
 
     public function updateRoomType(UpdateRoomTypeRequest $request): JsonResponse
     {
+        $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $postData = $request->validated();
             $roomType = $this->roomTypeRepo->find($postData['id']);
             if (!$roomType) {
                 return $this->respondError(__('messages.not_found'));
