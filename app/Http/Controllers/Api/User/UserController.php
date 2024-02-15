@@ -52,10 +52,19 @@ class UserController extends ApiController
             DB::beginTransaction();
             $postData['role_type'] = RoleTypeEnum::CUSTOMER->value;
             $user = $this->userRepo->create($postData);
-            Auth::login($user);
             $data = fractal($user, new UserTransformer())->toArray();
-            $response = $this->respondSuccess($data);
             DB::commit();
+            if (Auth::attempt(['email' =>$postData['email'], 'password' => $postData['password']])) {
+                $auth_user= Auth::user();
+                $respData = [
+                    "message" => 'Login successfully',
+                    'access_token' => $auth_user->createToken('Ai-Hotel')->accessToken,
+                    'customer' => $data,
+                ];
+                return $this->respondSuccess($respData);
+            } else {
+                return $this->respondFailedLogin();
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             $response = $this->respondError($e->getMessage(), 400);
