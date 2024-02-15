@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\Hotel\HotelController;
 use App\Http\Controllers\Api\Reservation\ReservationController;
-use App\Http\Controllers\Api\Room\RoomController;
-use App\Http\Controllers\Api\Room\RoomTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +21,9 @@ Route::group([
     Route::put('update', [ReservationController::class, 'updateReservation']);
     Route::put('check-in', [ReservationController::class, 'checkIn']);
     Route::put('check-out', [ReservationController::class, 'checkOut']);
+    Route::get('get-one{reservation_id?}', [ReservationController::class, 'getOneReservation']);
+    Route::get('list{per_page?}{page?}', [ReservationController::class, 'getListReservations']);
+    Route::get('filter-reservation{per_page?}{page?}', [ReservationController::class, 'filterReservation']);
 });
 
 
