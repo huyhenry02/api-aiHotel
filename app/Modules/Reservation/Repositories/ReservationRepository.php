@@ -23,15 +23,17 @@ class ReservationRepository extends BaseRepository implements ReservationInterfa
     public function filterReservation(array $filters, int $perPage = 15): LengthAwarePaginator
     {
         $query = $this->_model->query();
+        $query->select('reservations.*', 'rooms.room_type_id', 'rooms.hotel_id');
+        if (isset($filters['hotel_id']) || isset($filters['room_type_id'])) {
+            $query->join('rooms', 'reservations.room_id', '=', 'rooms.id');
 
-        if (isset($filters['hotel_id'])) {
-            $query->join('rooms', 'reservations.room_id', '=', 'rooms.id')
-                ->where('rooms.hotel_id', $filters['hotel_id']);
-        }
+            if (isset($filters['hotel_id'])) {
+                $query->where('rooms.hotel_id', $filters['hotel_id']);
+            }
 
-        if (isset($filters['room_type_id'])) {
-            $query->join('rooms', 'reservations.room_id', '=', 'rooms.id')
-                ->where('rooms.room_type_id', $filters['room_type_id']);
+            if (isset($filters['room_type_id'])) {
+                $query->where('rooms.room_type_id', $filters['room_type_id']);
+            }
         }
 
         if (isset($filters['status'])) {
@@ -51,7 +53,6 @@ class ReservationRepository extends BaseRepository implements ReservationInterfa
                 $query->where('phone', $filters['phone']);
             });
         }
-
         return $query->paginate($perPage);
     }
 }
