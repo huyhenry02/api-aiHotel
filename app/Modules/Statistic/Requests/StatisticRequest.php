@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Modules\Statistic\Requests;
 
 use App\Http\Requests\CommonRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -23,6 +23,8 @@ class StatisticRequest extends CommonRequest
     public function rules(): array
     {
         return [
+            'start_date' => 'required|date',
+            'collection' => 'required|string',
             'type' => 'required|in:day,week,month,year',
         ];
     }

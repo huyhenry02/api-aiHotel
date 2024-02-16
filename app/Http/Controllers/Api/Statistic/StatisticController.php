@@ -3,37 +3,35 @@
 namespace App\Http\Controllers\Api\Statistic;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\ReportRequest;
-use App\Http\Requests\StatisticRequest;
-use App\Modules\Reservation\Repositories\Interfaces\ReservationInterface;
-use App\Modules\User\Repositories\Interfaces\UserInterface;
+use App\Modules\Reservation\Models\Reservation;
+use App\Modules\Statistic\Repositories\Interfaces\StatisticInterface;
+use App\Modules\Statistic\Requests\StatisticRequest;
+use App\Modules\User\Models\User;
 use Illuminate\Http\JsonResponse;
 
 
 class StatisticController extends ApiController
 {
-    protected ReservationInterface $reservationRepo;
-    protected UserInterface $userRepo;
+    protected StatisticInterface $statisticRepo;
 
-    public function __construct(ReservationInterface $reservationRepo, UserInterface $userRepo)
+    public function __construct(StatisticInterface $statisticRepo)
     {
-        $this->reservationRepo = $reservationRepo;
-        $this->userRepo = $userRepo;
+        $this->statisticRepo = $statisticRepo;
     }
 
-    public function statisticCustomer(StatisticRequest $request): JsonResponse
+    public function statistic(StatisticRequest $request): JsonResponse
     {
         $postData = $request->validated();
-        $data = $this->userRepo->getCustomerStatistics(startDate: $postData['start_date'], endDate: $postData['end_date'], type: $postData['type']);
-        return $this->respondSuccess($data);
-    }
-
-    public function statisticReservation(StatisticRequest $request): JsonResponse
-    {
-        $postData = $request->validated();
-        $startDate = $postData['start_date'];
-        $endDate = $postData['end_date'];
-        $data = $this->reservationRepo->getReservationStatistics($startDate, $endDate);
+        $collectionModelMap = [
+            'customer' => User::class,
+            'reservation' => Reservation::class,
+        ];
+        $modelClass = $collectionModelMap[$postData['collection']] ?? null;
+        if (!$modelClass) {
+            return $this->respondError(__('messages.not_found'));
+        }
+        $model = new $modelClass;
+        $data = $this->statisticRepo->getDataStatistics(model: $model,startDate: $postData['start_date'], type: $postData['type']);
         return $this->respondSuccess($data);
     }
 }

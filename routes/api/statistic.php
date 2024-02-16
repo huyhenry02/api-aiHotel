@@ -7,6 +7,5 @@ Route::group([
     'prefix' => 'statistic',
     'middleware' => 'auth:api'
 ], function () {
-    Route::get('customer', [StatisticController::class, 'statisticCustomer']);
-    Route::get('reservation', [StatisticController::class, 'statisticReservation']);
+    Route::get('data', [StatisticController::class, 'statistic']);
 });

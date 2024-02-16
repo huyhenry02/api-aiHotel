@@ -2,11 +2,11 @@
 
 namespace App\Modules\User\Repositories;
 
+use App\Enums\RoleTypeEnum;
 use App\Modules\User\Models\PasswordResetToken;
 use App\Modules\User\Models\User;
 use App\Modules\User\Repositories\Interfaces\UserInterface;
 use App\Repositories\BaseRepository;
-use DateTime;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -23,6 +23,7 @@ class UserRepository extends BaseRepository implements UserInterface
     {
         return User::class;
     }
+
     public function changePassword(User|Authenticatable $user, string $password): bool
     {
         return $user->update([
@@ -70,30 +71,5 @@ class UserRepository extends BaseRepository implements UserInterface
         return [
             'resetToken' => $resetToken,
         ];
-    }
-    public function getCustomerStatistics(DateTime $startDate, DateTime $endDate, string $type): mixed
-    {
-        $query = $this->_model->whereBetween('created_at', [$startDate, $endDate]);
-
-        switch ($type) {
-            case 'week':
-                $query->selectRaw('WEEK(created_at) as week, COUNT(*) as count')
-                    ->groupBy('week');
-                break;
-            case 'month':
-                $query->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-                    ->groupBy('month');
-                break;
-            case 'year':
-                $query->selectRaw('YEAR(created_at) as year, COUNT(*) as count')
-                    ->groupBy('year');
-                break;
-            case 'quarter':
-                $query->selectRaw('QUARTER(created_at) as quarter, COUNT(*) as count')
-                    ->groupBy('quarter');
-                break;
-        }
-
-        return $query->get();
     }
 }
