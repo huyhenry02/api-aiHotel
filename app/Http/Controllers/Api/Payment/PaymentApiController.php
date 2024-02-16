@@ -24,6 +24,7 @@ class PaymentApiController extends ApiController
         $itemId = $request->item_id;
         // TODO: Need to get amount, ... from item id(invoice, ...)
         $amount = 50;
+        // TODO: check invoice created payment intent -> get payment intent. Don't exists -> create payment intent and update payment intent id into invoice
         $data = $this->paymentService->createPaymentIntent($itemId, $this->getAmountPayment($amount));
 
         return $this->respondSuccess($data);
