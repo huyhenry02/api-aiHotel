@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends BaseModel
 {
-    use SoftDeletes;
-
     public $table = 'services';
     /**
      * The attributes that are mass assignable.

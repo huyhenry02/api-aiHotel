@@ -17,6 +17,7 @@ class RepositoriesProvider extends ServiceProvider
             'Example',
             'Reservation',
             'Statistic',
+            'Service',
         ];
         foreach ($repositories as $repository) {
             $this->app->bind('App\Modules\\' . $repository . '\Repositories\Interfaces\\' . $repository . 'Interface',

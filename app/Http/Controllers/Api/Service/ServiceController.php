@@ -86,9 +86,8 @@ class ServiceController extends ApiController
                 throw new Exception('Room type not found');
             }
             $service->delete();
-            $service->hotels()->detach();
             DB::commit();
-            $response = $this->respondSuccess('Room type deleted successfully');
+            $response = $this->respondSuccess('Service deleted successfully');
         } catch (Exception $e) {
             DB::rollBack();
             $response = $this->respondError($e->getMessage());
