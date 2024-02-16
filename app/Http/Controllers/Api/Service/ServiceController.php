@@ -1,43 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Api\Room;
+namespace App\Http\Controllers\Api\Service;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\PaginationRequest;
-use App\Modules\Hotel\Repositories\Interfaces\HotelInterface;
-use App\Modules\Hotel\Requests\GetOneHotelRequest;
-use App\Modules\Room\Repositories\Interfaces\RoomInterface;
-use App\Modules\Room\Repositories\Interfaces\RoomTypeInterface;
-use App\Modules\Room\Requests\CreateRoomTypeRequest;
-use App\Modules\Room\Requests\GetOneRoomTypeRequest;
-use App\Modules\Room\Requests\UpdateRoomTypeRequest;
-use App\Modules\Room\Transformers\RoomTypeTransformer;
+use App\Modules\Service\Repositories\Interfaces\ServiceInterface;
+use App\Modules\Service\Requests\CreateServiceRequest;
+use App\Modules\Service\Requests\GetOneServiceRequest;
+use App\Modules\Service\Requests\UpdateServiceRequest;
+use App\Modules\Service\Transformers\ServiceTransformer;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class RoomTypeController extends ApiController
+class ServiceController extends ApiController
 {
     use AuthorizesRequests, ValidatesRequests;
-
-    protected RoomTypeInterface $roomTypeRepo;
-
-    public function __construct(RoomInterface $room, RoomTypeInterface $roomType, HotelInterface $hotel)
+    public ServiceInterface $serviceRepo;
+    public function __construct(ServiceInterface $serviceRepo)
     {
-        $this->roomTypeRepo = $roomType;
-
+        $this->serviceRepo = $serviceRepo;
     }
-
-    public function createRoomType(CreateRoomTypeRequest $request): JsonResponse
+    public function createService(CreateServiceRequest $request): JsonResponse
     {
         try {
             DB::beginTransaction();
             $data = $request->validated();
-            $roomType = $this->roomTypeRepo->create($data);
+            $service = $this->serviceRepo->create($data);
             DB::commit();
-            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
+            $data = fractal($service, new ServiceTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             DB::rollBack();
@@ -46,16 +39,16 @@ class RoomTypeController extends ApiController
         return $response;
     }
 
-    public function getOneRoomType(GetOneRoomTypeRequest $request): JsonResponse
+    public function getOneService(GetOneServiceRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
-            $roomType = $this->roomTypeRepo->find($data['room_type_id']);
-            if (!$roomType) {
+            $service = $this->serviceRepo->find($data['service_id']);
+            if (!$service) {
                 return $this->respondError(__('messages.not_found'));
 
             }
-            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
+            $data = fractal($service, new ServiceTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
@@ -63,18 +56,18 @@ class RoomTypeController extends ApiController
         return $response;
     }
 
-    public function updateRoomType(UpdateRoomTypeRequest $request): JsonResponse
+    public function updateService(UpdateServiceRequest $request): JsonResponse
     {
         $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $roomType = $this->roomTypeRepo->find($postData['room_type_id']);
-            if (!$roomType) {
+            $service = $this->serviceRepo->find($postData['service_id']);
+            if (!$service) {
                 return $this->respondError(__('messages.not_found'));
             }
-            $roomType->fill($postData);
-            $roomType->save();
-            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
+            $service->fill($postData);
+            $service->save();
+            $data = fractal($service, new ServiceTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {
@@ -84,16 +77,16 @@ class RoomTypeController extends ApiController
         return $response;
     }
 
-    public function deleteRoomType(GetOneRoomTypeRequest $request): JsonResponse
+    public function deleteService(GetOneServiceRequest $request): JsonResponse
     {
         try {
             DB::beginTransaction();
-            $roomType = $this->roomTypeRepo->find($request['room_type_id']);
-            if (!$roomType) {
+            $service = $this->serviceRepo->find($request['service_id']);
+            if (!$service) {
                 throw new Exception('Room type not found');
             }
-            $roomType->delete();
-            $roomType->hotels()->detach();
+            $service->delete();
+            $service->hotels()->detach();
             DB::commit();
             $response = $this->respondSuccess('Room type deleted successfully');
         } catch (Exception $e) {
@@ -103,12 +96,12 @@ class RoomTypeController extends ApiController
         return $response;
     }
 
-    public function getRoomTypes(PaginationRequest $request): JsonResponse
+    public function getServices(PaginationRequest $request): JsonResponse
     {
         try {
             $postData = $request->validated('per_page', '15');
-            $roomTypes = $this->roomTypeRepo->getData(perPage: $postData);
-            $data = fractal($roomTypes, new RoomTypeTransformer())->toArray();
+            $services = $this->serviceRepo->getData(perPage: $postData);
+            $data = fractal($services, new ServiceTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
