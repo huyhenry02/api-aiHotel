@@ -2,6 +2,7 @@
 
 namespace App\Modules\User\Repositories;
 
+use App\Enums\RoleTypeEnum;
 use App\Modules\User\Models\PasswordResetToken;
 use App\Modules\User\Models\User;
 use App\Modules\User\Repositories\Interfaces\UserInterface;
@@ -22,6 +23,7 @@ class UserRepository extends BaseRepository implements UserInterface
     {
         return User::class;
     }
+
     public function changePassword(User|Authenticatable $user, string $password): bool
     {
         return $user->update([
@@ -70,5 +72,4 @@ class UserRepository extends BaseRepository implements UserInterface
             'resetToken' => $resetToken,
         ];
     }
-
 }

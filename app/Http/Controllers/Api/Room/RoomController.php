@@ -46,8 +46,8 @@ class RoomController extends ApiController
             DB::beginTransaction();
             $postData['code'] = 0;
             $room = $this->roomRepo->create($postData);
-            $lastRoom = $this->roomRepo->getLastRoomOnFloor($postData['floor'],$postData['hotel_id']);
-            $this->roomRepo->generateCodeRoom($lastRoom, $postData['floor'], $room);
+            $lastRoom = $this->roomRepo->getLastRoomOnFloor(floorNumber: $postData['floor'], hotelId: $postData['hotel_id']);
+            $this->roomRepo->generateCodeRoom(lastRoom: $lastRoom, floorNumber: $postData['floor'], room: $room);
             $room->save();
             DB::commit();
             $data = fractal($room, new RoomTransformer())->toArray();
@@ -62,7 +62,7 @@ class RoomController extends ApiController
     public function deleteRoom(GetOneRoomRequest $request): JsonResponse
     {
         $postData = $request->validated();
-try {
+        try {
             DB::beginTransaction();
             $room = $this->roomRepo->find($postData['room_id']);
             if (!$room) {
@@ -81,7 +81,7 @@ try {
     public function updateRoom(UpdateRoomRequest $request): JsonResponse
     {
         $postData = $request->validated();
-try {
+        try {
             DB::beginTransaction();
             $room = $this->roomRepo->find($postData['room_id']);
             if (!$room) {

@@ -135,6 +135,7 @@ class ReservationController extends ApiController
         }
         return $response;
     }
+
     public function getListReservations(PaginationRequest $request): JsonResponse
     {
         try {
@@ -147,11 +148,12 @@ class ReservationController extends ApiController
         }
         return $response;
     }
+
     public function filterReservation(FilterReservationRequest $request): JsonResponse
     {
         try {
             $postData = $request->validated();
-            $reservations = $this->reservationRepo->filterReservation($postData);
+            $reservations = $this->reservationRepo->filterReservation(filters: $postData);
             $data = fractal($reservations, new ReservationTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {

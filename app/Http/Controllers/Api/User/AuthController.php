@@ -65,7 +65,7 @@ class AuthController extends ApiController
         DB::beginTransaction();
         try {
             $email = $request->validated('email');
-            $result = $this->userRepo->findUserAndSendMail($email);
+            $result = $this->userRepo->findUserAndSendMail(email: $email);
             $resetLink = env('FRONTEND_PATH') . '/reset-password?token=' . $result['token'];
             $data = [
                 'resetLink' => $resetLink,
@@ -95,7 +95,7 @@ class AuthController extends ApiController
         DB::beginTransaction();
         try {
             $postData = $request->validated();
-            $result = $this->userRepo->resetPasswordWithToken($postData['token'], $postData['new_password']);
+            $result = $this->userRepo->resetPasswordWithToken(token: $postData['token'], newPassword: $postData['new_password']);
             $result['resetToken']->delete();
             $resp = $this->respondSuccessWithoutData(__('messages.reset_successfully'));
             DB::commit();
@@ -116,7 +116,7 @@ class AuthController extends ApiController
             if (!$user || !password_verify($request->validated('old_password'), $user->password)) {
                 throw new Exception(__('messages.change_fail'));
             }
-            $this->userRepo->changePassword($user, bcrypt($request->validated('new_password')));
+            $this->userRepo->changePassword(user: $user, password: bcrypt($request->validated('new_password')));
             $resp = $this->respondSuccessWithoutData(__('messages.change_successfully'));
 
             DB::commit();
