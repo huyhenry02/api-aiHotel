@@ -22,15 +22,11 @@ class RoomTypeController extends ApiController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    protected RoomInterface $roomRepo;
     protected RoomTypeInterface $roomTypeRepo;
-    protected HotelInterface $hotelRepo;
 
     public function __construct(RoomInterface $room, RoomTypeInterface $roomType, HotelInterface $hotel)
     {
-        $this->roomRepo = $room;
         $this->roomTypeRepo = $roomType;
-        $this->hotelRepo = $hotel;
 
     }
 
@@ -54,7 +50,7 @@ class RoomTypeController extends ApiController
     {
         try {
             $data = $request->validated();
-            $roomType = $this->roomTypeRepo->find($data['id']);
+            $roomType = $this->roomTypeRepo->find($data['room_type_id']);
             if (!$roomType) {
                 return $this->respondError(__('messages.not_found'));
 
@@ -72,7 +68,7 @@ class RoomTypeController extends ApiController
         $postData = $request->validated();
         try {
             DB::beginTransaction();
-            $roomType = $this->roomTypeRepo->find($postData['id']);
+            $roomType = $this->roomTypeRepo->find($postData['room_type_id']);
             if (!$roomType) {
                 return $this->respondError(__('messages.not_found'));
             }
