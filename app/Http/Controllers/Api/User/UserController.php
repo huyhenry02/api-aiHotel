@@ -54,8 +54,8 @@ class UserController extends ApiController
             $user = $this->userRepo->create($postData);
             $data = fractal($user, new UserTransformer())->toArray();
             DB::commit();
-            if (Auth::attempt(['email' =>$postData['email'], 'password' => $postData['password']])) {
-                $auth_user= Auth::user();
+            if (Auth::attempt(['email' => $postData['email'], 'password' => $postData['password']])) {
+                $auth_user = Auth::user();
                 $respData = [
                     "message" => 'Login successfully',
                     'access_token' => $auth_user->createToken('Ai-Hotel')->accessToken,

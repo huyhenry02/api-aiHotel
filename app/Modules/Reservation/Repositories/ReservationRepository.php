@@ -6,6 +6,7 @@ use App\Modules\Reservation\Models\Reservation;
 use App\Modules\Reservation\Repositories\Interfaces\ReservationInterface;
 use App\Modules\Room\Models\Room;
 use App\Repositories\BaseRepository;
+use DateTime;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -20,6 +21,12 @@ class ReservationRepository extends BaseRepository implements ReservationInterfa
     {
         return Reservation::class;
     }
+
+    /**
+     * @param array $filters
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
     public function filterReservation(array $filters, int $perPage = 15): LengthAwarePaginator
     {
         $query = $this->_model->query();
@@ -54,5 +61,15 @@ class ReservationRepository extends BaseRepository implements ReservationInterfa
             });
         }
         return $query->paginate($perPage);
+    }
+
+    /**
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @return mixed
+     */
+    public function getReservationStatistics(DateTime $startDate, DateTime $endDate): mixed
+    {
+        return $this->_model->whereBetween('created_at', [$startDate, $endDate])->get();
     }
 }

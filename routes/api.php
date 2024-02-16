@@ -9,3 +9,4 @@ require ('api/example.php');
 require ('api/hotel.php');
 require ('api/room.php');
 require ('api/reservation.php');
+require ('api/statistic.php');
