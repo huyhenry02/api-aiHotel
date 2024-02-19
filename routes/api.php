@@ -12,3 +12,4 @@ require ('api/reservation.php');
 require ('api/statistic.php');
 require ('api/payment.php');
 require ('api/service.php');
+require ('api/invoice.php');

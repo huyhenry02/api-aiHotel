@@ -20,11 +20,11 @@ class RoomRepository extends BaseRepository implements RoomInterface
     }
 
     /**
-     * @param int $floorNumber
-     * @param int $hotelId
+     * @param  $floorNumber
+     * @param  $hotelId
      * @return mixed
      */
-    public function getLastRoomOnFloor(int $floorNumber,int $hotelId): mixed
+    public function getLastRoomOnFloor($floorNumber, $hotelId): mixed
     {
         return $this->_model
             ->where('hotel_id', $hotelId)
@@ -34,12 +34,12 @@ class RoomRepository extends BaseRepository implements RoomInterface
     }
 
     /**
-     * @param int $lastRoom
-     * @param int $floorNumber
-     * @param int $room
+     * @param  $lastRoom
+     * @param  $floorNumber
+     * @param  $room
      * @return void
      */
-    public function generateCodeRoom(int $lastRoom,int $floorNumber,int $room): void
+    public function generateCodeRoom($lastRoom, $floorNumber, $room): void
     {
         if (!$lastRoom) {
             $room->code = $floorNumber . '01';

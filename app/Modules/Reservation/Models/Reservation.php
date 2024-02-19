@@ -3,6 +3,7 @@
 namespace App\Modules\Reservation\Models;
 
 use App\Models\BaseModel;
+use App\Modules\Invoice\Models\Invoice;
 use App\Modules\Room\Models\Room;
 use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +31,7 @@ class Reservation extends BaseModel
         'reject_reason',
         'room_id',
         'amount_person',
+        'invoice_id',
     ];
 
     public function user(): BelongsTo
@@ -40,5 +42,9 @@ class Reservation extends BaseModel
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class,'room_id');
+    }
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class,'invoice_id');
     }
 }

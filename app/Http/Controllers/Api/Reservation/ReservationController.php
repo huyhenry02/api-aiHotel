@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Reservation;
 use App\Enums\ReservationStatusEnum;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\PaginationRequest;
+use App\Modules\Invoice\Repositories\Interfaces\InvoiceInterface;
 use App\Modules\Reservation\Repositories\Interfaces\ReservationInterface;
 use App\Modules\Reservation\Requests\CreateReservationRequest;
 use App\Modules\Reservation\Requests\FilterReservationRequest;
@@ -21,11 +22,14 @@ class ReservationController extends ApiController
 {
     protected ReservationInterface $reservationRepo;
     protected RoomInterface $roomRepo;
+    protected InvoiceInterface $invoiceRepo;
 
-    public function __construct(ReservationInterface $reservationRepo, RoomInterface $roomRepo)
+
+    public function __construct(ReservationInterface $reservationRepo, RoomInterface $roomRepo, InvoiceInterface $invoiceRepo)
     {
         $this->reservationRepo = $reservationRepo;
         $this->roomRepo = $roomRepo;
+        $this->invoiceRepo = $invoiceRepo;
     }
 
     public function createReservation(CreateReservationRequest $request): JsonResponse
@@ -86,8 +90,13 @@ class ReservationController extends ApiController
             $reservation->check_in = now();
             $reservation->status = ReservationStatusEnum::PROCESSING->value;
             $reservation->save();
-            $data = fractal($reservation, new ReservationTransformer())->toArray();
-            $response = $this->respondSuccess($data);
+            $invoice = $this->invoiceRepo->create([
+                'code' => 'INV' . $reservation->id
+            ]);
+            $reservation->invoice_id = $invoice->id;
+            $reservation->save();
+            $dataReservation = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice','services'])->toArray();
+            $response = $this->respondSuccess($dataReservation);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

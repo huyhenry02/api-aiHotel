@@ -7,17 +7,17 @@ use App\Repositories\Interfaces\RepositoryInterface;
 interface RoomInterface extends RepositoryInterface
 {
     /**
-     * @param int $floorNumber
-     * @param int $hotelId
+     * @param  $floorNumber
+     * @param  $hotelId
      * @return mixed
      */
-    public function getLastRoomOnFloor(int $floorNumber,int $hotelId): mixed;
+    public function getLastRoomOnFloor($floorNumber, $hotelId): mixed;
 
     /**
-     * @param int $lastRoom
-     * @param int $floorNumber
-     * @param int $room
+     * @param $lastRoom
+     * @param $floorNumber
+     * @param $room
      * @return void
      */
-    public function generateCodeRoom(int $lastRoom,int $floorNumber,int $room): void;
+    public function generateCodeRoom($lastRoom, $floorNumber, $room): void;
 }

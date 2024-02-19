@@ -51,7 +51,7 @@ class RoomController extends ApiController
             $room->save();
             DB::commit();
             $data = fractal($room, new RoomTransformer())->toArray();
-            return $this->respondSuccess($data);
+            $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             DB::rollBack();
             $response = $this->respondError($e->getMessage());
