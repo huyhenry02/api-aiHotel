@@ -18,8 +18,8 @@ Route::group([
     'middleware' => 'auth:api'
 ], function () {
     Route::get('list-invoices{per_page?}{page?}', [InvoiceController::class, 'getListInvoices']);
-    Route::get('invoice{invoice_id?}', [InvoiceController::class, 'getOneInvoice']);
-    Route::put('update-invoice', [InvoiceController::class, 'updateInvoice']);
+    Route::get('get-one{invoice_id?}', [InvoiceController::class, 'getOneInvoice']);
+    Route::put('update', [InvoiceController::class, 'updateInvoice']);
 });
 
 

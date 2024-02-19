@@ -19,7 +19,7 @@ class InvoiceTransformer extends TransformerAbstract
             'id' => $invoice->id,
             'code' => $invoice->code,
             'status' => $invoice->status,
-            'total_date' => $invoice->total_date,
+            'total_day' => $invoice->total_day,
             'total' => $invoice->total,
             'pay_method' => $invoice->pay_method,
         ];

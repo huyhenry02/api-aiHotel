@@ -24,7 +24,7 @@ class UpdateInvoiceRequest extends CommonRequest
     {
         return [
             'invoice_id' => 'required|integer',
-            'services' => 'required|array',
+            'services' => 'array',
         ];
     }
 }
