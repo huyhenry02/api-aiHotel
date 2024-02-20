@@ -2,6 +2,9 @@
 
 namespace App\Modules\Payment\Services;
 
+use Stripe\PaymentIntent;
+use Stripe\StripeClient;
+
 class PaymentService
 {
     protected $paymentService;
@@ -9,11 +12,11 @@ class PaymentService
     public function __construct()
     {
         if (!$this->paymentService) {
-            $this->paymentService = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
+            $this->paymentService = new StripeClient(config('stripe.api_keys.secret_key'));
         }
     }
 
-    public function createPaymentIntent($itemId, $amount = 1000, $currency = 'usd'): \Stripe\PaymentIntent
+    public function createPaymentIntent($itemId, $amount = 1000, $currency = 'usd'): PaymentIntent
     {
         return $this->paymentService->paymentIntents->create([
             'amount' => $amount,
@@ -24,7 +27,7 @@ class PaymentService
         ]);
     }
 
-    public function getPaymentIntent($paymentIntentId): \Stripe\PaymentIntent
+    public function getPaymentIntent($paymentIntentId): PaymentIntent
     {
         return $this->paymentService->paymentIntents->retrieve($paymentIntentId);
     }

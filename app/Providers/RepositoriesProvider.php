@@ -18,6 +18,7 @@ class RepositoriesProvider extends ServiceProvider
             'Reservation',
             'Statistic',
             'Service',
+            'Invoice',
             'RoomType',
             'Room'
         ];
