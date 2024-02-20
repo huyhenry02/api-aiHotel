@@ -26,6 +26,7 @@ class UpdateHotelRequest extends CommonRequest
             'hotel_id' => 'required|integer',
             'name' => 'string|max:255',
             'address' => 'string|max:255',
+            'room_types' => 'array',
             'banner' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
         ];
