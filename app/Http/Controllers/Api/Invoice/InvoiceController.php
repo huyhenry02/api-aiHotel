@@ -19,11 +19,13 @@ class InvoiceController extends ApiController
 {
     protected InvoiceInterface $invoiceRepo;
     protected PaymentService $paymentService;
+
     public function __construct(InvoiceInterface $invoiceRepo, PaymentService $paymentService)
     {
         $this->invoiceRepo = $invoiceRepo;
         $this->paymentService = $paymentService;
     }
+
     public function getListInvoices(PaginationRequest $request): JsonResponse
     {
         try {
@@ -42,13 +44,14 @@ class InvoiceController extends ApiController
      */
     public function getOneInvoice(GetOneInvoiceRequest $request): JsonResponse
     {
-          $invoice = $this->invoiceRepo->find($request['invoice_id']);
-            if (!$invoice) {
-                throw new Exception(__('messages.not_found'));
-            }
-            $data = fractal($invoice, new InvoiceTransformer())->parseIncludes(['services'])->toArray();
-            return $this->respondSuccess($data);
+        $invoice = $this->invoiceRepo->find($request['invoice_id']);
+        if (!$invoice) {
+            throw new Exception(__('messages.not_found'));
+        }
+        $data = fractal($invoice, new InvoiceTransformer())->parseIncludes(['services'])->toArray();
+        return $this->respondSuccess($data);
     }
+
     public function updateInvoice(UpdateInvoiceRequest $request): JsonResponse
     {
         $postData = $request->validated();
@@ -67,6 +70,7 @@ class InvoiceController extends ApiController
         }
         return $response;
     }
+
     public function getClientSecretKey(GetOneInvoiceRequest $request): JsonResponse
     {
         $postData = $request->validated();
@@ -79,9 +83,10 @@ class InvoiceController extends ApiController
         if (!$amount) {
             return $this->respondError(__('messages.amount_invalid'));
         }
-        $data = $this->paymentService->createPaymentIntent(itemId:$itemId, amount: $this->getAmountPayment($amount));
+        $data = $this->paymentService->createPaymentIntent(itemId: $itemId, amount: $this->getAmountPayment($amount));
         return $this->respondSuccess($data);
     }
+
     /**
      * generate amount of stripe
      * @param $amount
@@ -91,13 +96,13 @@ class InvoiceController extends ApiController
     {
         return $amount * 100;
     }
+
     public function verifyPaymentInvoice(VerifyPaymentInvoiceRequest $request): JsonResponse
     {
         $postData = $request->validated();
         $paymentIntentId = $postData['payment_intent_id'];
         $itemId = $postData['invoice_id'];
         $isValid = false;
-        $message = '';
         $paymentIntentData = $this->paymentService->getPaymentIntent($paymentIntentId);
         $invoice = $this->invoiceRepo->find($itemId);
         if (!$invoice) {
@@ -106,21 +111,23 @@ class InvoiceController extends ApiController
         $invoiceAmountInCents = $this->getAmountPayment($invoice->total_price);
 
         if ($invoiceAmountInCents !== $paymentIntentData['amount']) {
-            $message = 'Payment amount does not match invoice amount';
-            return $this->respondError($message);
+            return $this->respondError('Payment amount does not match invoice amount');
         }
-
-//        if ($invoice->currency !== $paymentIntentData['currency']) {
-//            $message = 'Payment currency does not match invoice currency';
-//            return $this->respondError($message);
-//        }
         if ($paymentIntentId === $paymentIntentData['id']
             && (
                 $paymentIntentData['status'] == 'succeeded' ||
-                ($paymentIntentData['status'] == 'requires_capture' && $paymentIntentData['capture_method'] === 'manual')
+                ($paymentIntentData['status'] == 'requires_payment_method' && $paymentIntentData['capture_method'] === 'automatic')
             )
         ) {
-            $invoice->status = 'paid';
+            $invoice = $this->invoiceRepo->update($itemId, [
+                'status' => 'paid',
+                'payment_intent_id' => $paymentIntentId,
+                'paid_at' => now(),
+                'payment_method' => $paymentIntentData['payment_method'],
+                'currency' => $paymentIntentData['currency'],
+                'user_id_paid' => $postData['user_id_paid'],
+            ]);
+            $message = 'Payment Success';
             $isValid = true;
         } else {
             $message = 'Payment Invalid';

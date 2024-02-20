@@ -33,6 +33,7 @@ class Invoice extends BaseModel
         'user_id_paid',
         'user_id_check_in',
         'user_id_check_out',
+        'paid_at',
     ];
 
     /**

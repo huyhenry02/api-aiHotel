@@ -24,6 +24,7 @@ class VerifyPaymentInvoiceRequest extends CommonRequest
     {
         return [
             'invoice_id' => 'required|integer',
+            'user_id_paid' => 'required|integer',
             'payment_intent_id' => 'required|string',
         ];
     }
