@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api\Room;
+namespace App\Http\Controllers\Api\RoomType;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\PaginationRequest;
 use App\Modules\Hotel\Repositories\Interfaces\HotelInterface;
-use App\Modules\Hotel\Requests\GetOneHotelRequest;
 use App\Modules\Room\Repositories\Interfaces\RoomInterface;
-use App\Modules\Room\Repositories\Interfaces\RoomTypeInterface;
-use App\Modules\Room\Requests\CreateRoomTypeRequest;
-use App\Modules\Room\Requests\GetOneRoomTypeRequest;
-use App\Modules\Room\Requests\UpdateRoomTypeRequest;
-use App\Modules\Room\Transformers\RoomTypeTransformer;
+use App\Modules\RoomType\Repositories\Interfaces\RoomTypeInterface;
+use App\Modules\RoomType\Requests\CreateRoomTypeRequest;
+use App\Modules\RoomType\Requests\GetListRoomTypeRequest;
+use App\Modules\RoomType\Requests\GetOneRoomTypeRequest;
+use App\Modules\RoomType\Requests\UpdateRoomTypeRequest;
+use App\Modules\RoomType\Transformers\RoomTypeTransformer;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -23,10 +22,12 @@ class RoomTypeController extends ApiController
     use AuthorizesRequests, ValidatesRequests;
 
     protected RoomTypeInterface $roomTypeRepo;
+    protected HotelInterface $hotelRepo;
 
-    public function __construct(RoomInterface $room, RoomTypeInterface $roomType, HotelInterface $hotel)
+    public function __construct( RoomTypeInterface $roomType, HotelInterface $hotel)
     {
         $this->roomTypeRepo = $roomType;
+        $this->hotelRepo = $hotel;
 
     }
 
@@ -103,11 +104,13 @@ class RoomTypeController extends ApiController
         return $response;
     }
 
-    public function getRoomTypes(PaginationRequest $request): JsonResponse
+    public function getRoomTypes(GetListRoomTypeRequest $request): JsonResponse
     {
         try {
-            $postData = $request->validated('per_page', '15');
-            $roomTypes = $this->roomTypeRepo->getData(perPage: $postData);
+            $postData = $request->validated();
+            $perPage = $postData['per_page'] ?? 15;
+            $hotel = $this->hotelRepo->find($postData['hotel_id']);
+            $roomTypes = $hotel->roomTypes()->paginate($perPage);
             $data = fractal($roomTypes, new RoomTypeTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
