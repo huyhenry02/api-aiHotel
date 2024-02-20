@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Modules\Room\Transformers;
+namespace App\Modules\RoomType\Transformers;
 
-use App\Modules\Hotel\Models\Hotel;
-use App\Modules\Room\Models\RoomType;
+use App\Modules\RoomType\Models\RoomType;
 use League\Fractal\TransformerAbstract;
 
 class RoomTypeTransformer extends TransformerAbstract

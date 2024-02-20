@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Modules\Room\Requests;
+namespace App\Modules\RoomType\Requests;
 
-use App\Enums\RoleTypeEnum;
 use App\Http\Requests\CommonRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ListRoomRequest extends CommonRequest
+class UpdateRoomTypeRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +23,12 @@ class ListRoomRequest extends CommonRequest
     public function rules(): array
     {
         return [
-            'per_page' => 'nullable|integer',
-            'page' => 'nullable|integer',
-//            'type' => "nullable|string|in:$type",
+            'room_type_id' => 'required|integer',
+            'name' => 'string|max:255',
+            'code' => 'string|max:255',
+            'price' => 'numeric',
+            'description' => 'nullable|string|max:255',
+
         ];
     }
 }

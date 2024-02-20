@@ -3,20 +3,14 @@
 namespace App\Http\Controllers\Api\Room;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\PaginationRequest;
 use App\Modules\Hotel\Repositories\Interfaces\HotelInterface;
-use App\Modules\Hotel\Requests\GetOneHotelRequest;
 use App\Modules\Room\Repositories\Interfaces\RoomInterface;
-use App\Modules\Room\Repositories\Interfaces\RoomTypeInterface;
 use App\Modules\Room\Requests\CreateRoomRequest;
-use App\Modules\Room\Requests\CreateRoomTypeRequest;
 use App\Modules\Room\Requests\GetListRoomRequest;
 use App\Modules\Room\Requests\GetOneRoomRequest;
-use App\Modules\Room\Requests\GetOneRoomTypeRequest;
 use App\Modules\Room\Requests\UpdateRoomRequest;
-use App\Modules\Room\Requests\UpdateRoomTypeRequest;
 use App\Modules\Room\Transformers\RoomTransformer;
-use App\Modules\Room\Transformers\RoomTypeTransformer;
+use App\Modules\RoomType\Repositories\Interfaces\RoomTypeInterface;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
