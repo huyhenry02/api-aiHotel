@@ -27,7 +27,7 @@ class InvoiceRepository extends BaseRepository implements InvoiceInterface
      * @param $checkOut
      * @return void
      */
-    public function calculateTotalDates(Invoice $invoice, $checkIn, $checkOut): void
+    public function checkOutInvoice(Invoice $invoice, $checkIn, $checkOut): void
     {
         $checkIn = is_string($checkIn) ? Carbon::parse($checkIn) : $checkIn;
         $checkOut = is_string($checkOut) ? Carbon::parse($checkOut) : $checkOut;
@@ -39,6 +39,12 @@ class InvoiceRepository extends BaseRepository implements InvoiceInterface
             $totalDays++;
         }
         $invoice->total_day = $totalDays;
+        $totalPrice = 0;
+        foreach ($invoice->reservations as $reservation) {
+            $totalPrice += $reservation->room->roomType->price * $totalDays;
+        }
+        $invoice->total_price = $totalPrice;
+        $invoice->userCheckOut()->associate(auth()->user());
         $invoice->save();
     }
 }

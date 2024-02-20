@@ -13,5 +13,5 @@ interface InvoiceInterface extends RepositoryInterface
      * @param $checkOut
      * @return void
      */
-    public function calculateTotalDates(Invoice $invoice, $checkIn, $checkOut): void;
+    public function checkOutInvoice(Invoice $invoice, $checkIn, $checkOut): void;
 }

@@ -9,7 +9,7 @@ use App\Modules\Payment\Services\PaymentService;
 
 class PaymentApiController extends ApiController
 {
-    protected $paymentService;
+    protected PaymentService $paymentService;
     public function __construct(PaymentService $paymentService)
     {
         $this->paymentService = $paymentService;

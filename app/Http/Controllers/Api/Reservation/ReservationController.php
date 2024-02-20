@@ -92,7 +92,8 @@ class ReservationController extends ApiController
             $reservation->status = ReservationStatusEnum::PROCESSING->value;
             $reservation->save();
             $invoice = $this->invoiceRepo->create([
-                'code' => 'INV' . $reservation->id
+                'code' => 'INV' . $reservation->id,
+                'user_id_check_in' => Auth::id(),
             ]);
             $reservation->invoice_id = $invoice->id;
             $reservation->save();
@@ -123,7 +124,7 @@ class ReservationController extends ApiController
             $reservation->status = ReservationStatusEnum::COMPLETED->value;
             $reservation->save();
             $invoice = $this->invoiceRepo->find($reservation->invoice_id);
-            $this->invoiceRepo->calculateTotalDates($invoice, $reservation->check_in, $reservation->check_out);
+            $this->invoiceRepo->checkOutInvoice($invoice, $reservation->check_in, $reservation->check_out);
             $data = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice','services'])->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
