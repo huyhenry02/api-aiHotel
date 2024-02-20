@@ -9,7 +9,9 @@ use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Stripe\PaymentIntent;
 
 class Invoice extends BaseModel
 {
@@ -67,5 +69,9 @@ class Invoice extends BaseModel
     public function userCheckOut(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id_check_out');
+    }
+    public function paymentIntentId(): HasOne
+    {
+        return $this->hasOne(PaymentIntent::class, 'payment_intent_id');
     }
 }

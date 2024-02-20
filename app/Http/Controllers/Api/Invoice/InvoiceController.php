@@ -84,6 +84,12 @@ class InvoiceController extends ApiController
             return $this->respondError(__('messages.amount_invalid'));
         }
         $data = $this->paymentService->createPaymentIntent(itemId: $itemId, amount: $this->getAmountPayment($amount));
+        $invoice = $this->invoiceRepo->update($itemId, [
+            'payment_intent_id' => $data['id'],
+            'payment_method' => $data['payment_method'],
+            'currency' => $data['currency'],
+            ]);
+        $invoice->save();
         return $this->respondSuccess($data);
     }
 
@@ -121,10 +127,7 @@ class InvoiceController extends ApiController
         ) {
             $invoice = $this->invoiceRepo->update($itemId, [
                 'status' => 'paid',
-                'payment_intent_id' => $paymentIntentId,
                 'paid_at' => now(),
-                'payment_method' => $paymentIntentData['payment_method'],
-                'currency' => $paymentIntentData['currency'],
                 'user_id_paid' => $postData['user_id_paid'],
             ]);
             $message = 'Payment Success';
