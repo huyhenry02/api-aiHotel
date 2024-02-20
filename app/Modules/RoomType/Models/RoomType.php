@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Modules\Room\Models;
+namespace App\Modules\RoomType\Models;
 
 use App\Models\BaseModel;
 use App\Modules\Hotel\Models\Hotel;
+use App\Modules\Room\Models\Room;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 

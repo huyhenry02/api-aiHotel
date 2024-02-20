@@ -3,9 +3,7 @@
 namespace App\Modules\Hotel\Models;
 
 use App\Models\BaseModel;
-use App\Modules\Room\Models\RoomType;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HotelHasRoomType extends BaseModel
 {

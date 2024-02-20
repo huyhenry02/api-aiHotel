@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Room\Requests;
+namespace App\Modules\RoomType\Requests;
 
 use App\Http\Requests\CommonRequest;
 use Illuminate\Contracts\Validation\ValidationRule;

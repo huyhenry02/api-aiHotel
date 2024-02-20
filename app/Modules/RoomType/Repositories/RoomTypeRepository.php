@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Modules\Room\Repositories;
+namespace App\Modules\RoomType\Repositories;
 
-use App\Modules\Hotel\Models\Hotel;
-use App\Modules\Room\Models\RoomType;
-use App\Modules\Room\Repositories\Interfaces\RoomTypeInterface;
+use App\Modules\RoomType\Models\RoomType;
+use App\Modules\RoomType\Repositories\Interfaces\RoomTypeInterface;
 use App\Repositories\BaseRepository;
 
 

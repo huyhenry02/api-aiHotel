@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Modules\Room\Repositories\Interfaces;
+namespace App\Modules\RoomType\Repositories\Interfaces;
 
-use App\Modules\Room\Models\RoomType;
 use App\Repositories\Interfaces\RepositoryInterface;
 
 interface RoomTypeInterface extends RepositoryInterface
