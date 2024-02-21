@@ -2,6 +2,7 @@
 
 namespace App\Modules\Room\Repositories;
 
+use App\Enums\ReservationStatusEnum;
 use App\Modules\Room\Repositories\Interfaces\RoomInterface;
 use App\Modules\Room\Models\Room;
 use App\Repositories\BaseRepository;
@@ -50,5 +51,18 @@ class RoomRepository extends BaseRepository implements RoomInterface
             $newRoomNumber = str_pad($newRoomNumber, 2, '0', STR_PAD_LEFT);
             $room->code = $floorNumber . $newRoomNumber;
         }
+    }
+
+    /**
+     * @param $roomId
+     * @return mixed
+     */
+    public function getListCurrentReservationInRoom($roomId): mixed
+    {
+        $room = $this->_model->find($roomId);
+        return $room->reservations()
+            ->where('end_date', '>=', now())
+            ->whereIn('status', [ReservationStatusEnum::PROCESSING, ReservationStatusEnum::PENDING])
+            ->get();
     }
 }

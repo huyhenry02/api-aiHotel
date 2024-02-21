@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Room;
 
 use App\Http\Controllers\ApiController;
 use App\Modules\Hotel\Repositories\Interfaces\HotelInterface;
+use App\Modules\Reservation\Transformers\ReservationRoomTransformer;
 use App\Modules\Room\Repositories\Interfaces\RoomInterface;
 use App\Modules\Room\Requests\CreateRoomRequest;
 use App\Modules\Room\Requests\GetListRoomRequest;
@@ -118,13 +119,15 @@ class RoomController extends ApiController
     public function getRoomDetail(GetOneRoomRequest $request): JsonResponse
     {
         $postData = $request->validated();
-        $room = $this->roomRepo->find($postData['room_id']);
+        $roomId = $postData['room_id'];
+        $room = $this->roomRepo->find($roomId);
         if (!$room) {
             return $this->respondError(__('messages.room_not_found'));
         }
-        $reservations = $room->reservations()->where('start_date', '<=', now())->where('end_date', '>=', now())->get();
+        $reservations = $this->roomRepo->getListCurrentReservationInRoom(roomId: $roomId);
+        $dataReservations = fractal($reservations, new ReservationRoomTransformer())->toArray();
         $roomDetail = fractal($room, new RoomTransformer())->toArray();
-        $roomDetail['reservations'] = $reservations;
+        $roomDetail['reservations'] = $dataReservations;
         return $this->respondSuccess($roomDetail);
     }
 

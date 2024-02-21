@@ -20,4 +20,10 @@ interface RoomInterface extends RepositoryInterface
      * @return void
      */
     public function generateCodeRoom($lastRoom, $floorNumber, $room): void;
+
+    /**
+     * @param $roomId
+     * @return mixed
+     */
+    public function getListCurrentReservationInRoom($roomId): mixed;
 }
