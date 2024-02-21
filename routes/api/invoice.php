@@ -18,7 +18,7 @@ Route::group([
     'middleware' => 'auth:api'
 ], function () {
     Route::get('list-invoices{per_page?}{page?}', [InvoiceController::class, 'getListInvoices']);
-    Route::get('get-one{invoice_id?}', [InvoiceController::class, 'getOneInvoice']);
+    Route::get('detail{invoice_id?}', [InvoiceController::class, 'getOneInvoice']);
     Route::put('update', [InvoiceController::class, 'updateInvoice']);
     Route::get('payment/get-payment-secret-key{invoice_id?}', [InvoiceController::class, 'getClientSecretKey']);
     Route::post('payment/verify-payment', [InvoiceController::class, 'verifyPaymentInvoice']);

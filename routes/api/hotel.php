@@ -19,7 +19,7 @@ Route::group([
 ], function () {
     Route::post('create-hotel', [HotelController::class, 'createHotel']);
     Route::get('list-hotels{per_page?}{page?}', [HotelController::class, 'getListHotels']);
-    Route::get('one-hotel{hotel_id?}', [HotelController::class, 'getOneHotel']);
+    Route::get('detail{hotel_id?}', [HotelController::class, 'getOneHotel']);
     Route::put('update-hotel', [HotelController::class, 'updateHotel']);
     Route::delete('delete-hotel', [HotelController::class, 'deleteHotel']);
 });

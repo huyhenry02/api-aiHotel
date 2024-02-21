@@ -115,5 +115,17 @@ class RoomController extends ApiController
         return $response;
 
     }
+    public function getRoomDetail(GetOneRoomRequest $request): JsonResponse
+    {
+        $postData = $request->validated();
+        $room = $this->roomRepo->find($postData['room_id']);
+        if (!$room) {
+            return $this->respondError(__('messages.room_not_found'));
+        }
+        $reservations = $room->reservations()->where('start_date', '<=', now())->where('end_date', '>=', now())->get();
+        $roomDetail = fractal($room, new RoomTransformer())->toArray();
+        $roomDetail['reservations'] = $reservations;
+        return $this->respondSuccess($roomDetail);
+    }
 
 }

@@ -109,8 +109,12 @@ class RoomTypeController extends ApiController
         try {
             $postData = $request->validated();
             $perPage = $postData['per_page'] ?? 15;
-            $hotel = $this->hotelRepo->find($postData['hotel_id']);
-            $roomTypes = $hotel->roomTypes()->paginate($perPage);
+            if (isset($postData['hotel_id'])) {
+                $hotel = $this->hotelRepo->find($postData['hotel_id']);
+                $roomTypes = $hotel->roomTypes()->paginate($perPage);
+            } else {
+                $roomTypes = $this->roomTypeRepo->paginate($perPage);
+            }
             $data = fractal($roomTypes, new RoomTypeTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {

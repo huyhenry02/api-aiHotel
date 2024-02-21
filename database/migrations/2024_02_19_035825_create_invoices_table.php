@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\InvoiceStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->enum('status', ['pending', 'paid', 'canceled'])->default('pending');
+            $table->enum('status', InvoiceStatusEnum::values())->default('pending');
             $table->float('total_day' ,10, 2)->nullable();
             $table->float('total_price', 10, 2)->nullable();
             $table->string('payment_method')->nullable();

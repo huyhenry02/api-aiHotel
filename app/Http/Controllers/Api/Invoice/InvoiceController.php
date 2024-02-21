@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Invoice;
 
+use App\Enums\InvoiceStatusEnum;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\PaginationRequest;
 use App\Modules\Invoice\Repositories\Interfaces\InvoiceInterface;
@@ -79,18 +80,21 @@ class InvoiceController extends ApiController
         if (!$invoice) {
             return $this->respondError(__('messages.not_found'));
         }
-        $amount = $invoice->total_price;
-        if (!$amount) {
-            return $this->respondError(__('messages.amount_invalid'));
-        }
-        $data = $this->paymentService->createPaymentIntent(itemId: $itemId, amount: $this->getAmountPayment($amount));
-        $invoice = $this->invoiceRepo->update($itemId, [
-            'payment_intent_id' => $data['id'],
-            'payment_method' => $data['payment_method'],
-            'currency' => $data['currency'],
+        if ($invoice->payment_intent_id) {
+            $paymentIntentData = $this->paymentService->getPaymentIntent($invoice->payment_intent_id);
+        } else {
+            $amount = $invoice->total_price;
+            if (!$amount) {
+                return $this->respondError(__('messages.amount_invalid'));
+            }
+            $paymentIntentData = $this->paymentService->createPaymentIntent(itemId: $postData['invoice_id'], amount: $this->getAmountPayment($amount));
+            $this->invoiceRepo->update($postData['invoice_id'], [
+                'payment_intent_id' => $paymentIntentData['id'],
+                'payment_method' => $paymentIntentData['payment_method'],
+                'currency' => $paymentIntentData['currency'],
             ]);
-        $invoice->save();
-        return $this->respondSuccess($data);
+        }
+        return $this->respondSuccess($paymentIntentData);
     }
 
     /**
@@ -126,9 +130,9 @@ class InvoiceController extends ApiController
             )
         ) {
             $invoice = $this->invoiceRepo->update($itemId, [
-                'status' => 'paid',
+                'status' => InvoiceStatusEnum::PAID->value,
                 'paid_at' => now(),
-                'user_id_paid' => $postData['user_id_paid'],
+                'user_id_paid' => auth()->id(),
             ]);
             $message = 'Payment Success';
             $isValid = true;

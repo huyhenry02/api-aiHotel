@@ -18,7 +18,7 @@ Route::group([
     Route::post('create', [ServiceController::class, 'createService']);
     Route::post('update', [ServiceController::class, 'updateService']);
     Route::get('get-list', [ServiceController::class, 'getServices']);
-    Route::get('get{room_type_id?}', [ServiceController::class, 'getOneService']);
+    Route::get('detail{room_type_id?}', [ServiceController::class, 'getOneService']);
     Route::delete('delete{room_type_id?}', [ServiceController::class, 'deleteService']);
 });
 
