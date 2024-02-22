@@ -7,6 +7,9 @@ return [
     'unauthenticated' => 'unauthenticated.',
     'no_data' => 'No data need to update.',
     'change_fail' => 'Old Password is Incorrect',
+    'delete_successfully' => 'Delete successfully',
+    'update_fail' => 'Update fail',
+    'delete_fail' => 'Delete fail',
     'change_successfully' => 'Change Password Successfully',
     'send_email_successfully' => 'Send Email Successfully',
     'send_email_fail' => 'Send Email Fail',
@@ -20,4 +23,6 @@ return [
         'delete_successfully' => 'Delete user successfully',
         'delete_fail' => 'Delete user fail',
     ],
+    'reservation_not_processing' => 'Reservation is not processing',
+    'reservation_rejected' => 'Reservation is rejected',
 ];

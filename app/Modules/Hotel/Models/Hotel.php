@@ -6,11 +6,11 @@ use App\Models\BaseModel;
 use App\Modules\File\Models\File;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Modules\RoomType\Models\RoomType;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Hotel extends BaseModel
 {
-    use SoftDeletes;
-
     public $table = 'hotels';
     /**
      * The attributes that are mass assignable.
@@ -36,5 +36,9 @@ class Hotel extends BaseModel
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'file_model');
+    }
+    public function roomTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(RoomType::class,'hotel_has_room_types', 'hotel_id', 'room_type_id');
     }
 }

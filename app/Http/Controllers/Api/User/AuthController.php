@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends ApiController
 {
     protected UserInterface $userRepo;
+
     /**
      * @param UserInterface $user
      */
@@ -28,6 +29,7 @@ class AuthController extends ApiController
     {
         $this->userRepo = $user;
     }
+
     public function login(LoginRequest $request): JsonResponse
     {
         try {
@@ -46,22 +48,24 @@ class AuthController extends ApiController
         }
         return $resp;
     }
+
     public function logout(Request $request): JsonResponse
     {
         try {
             $request->user()->token()->revoke();
-            $response =  $this->respondSuccessWithoutData();
+            $response = $this->respondSuccessWithoutData();
         } catch (\Exception $e) {
             $response = $this->respondError($e->getMessage());
         }
         return $response;
     }
+
     public function sendResetPasswordEmail(SendEmailRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
             $email = $request->validated('email');
-            $result = $this->userRepo->findUserAndSendMail($email);
+            $result = $this->userRepo->findUserAndSendMail(email: $email);
             $resetLink = env('FRONTEND_PATH') . '/reset-password?token=' . $result['token'];
             $data = [
                 'resetLink' => $resetLink,
@@ -85,12 +89,13 @@ class AuthController extends ApiController
         }
         return $resp;
     }
+
     public function resetPassword(ResetPassRequest $request): JsonResponse
     {
         DB::beginTransaction();
         try {
             $postData = $request->validated();
-            $result = $this->userRepo->resetPasswordWithToken($postData['token'], $postData['new_password']);
+            $result = $this->userRepo->resetPasswordWithToken(token: $postData['token'], newPassword: $postData['new_password']);
             $result['resetToken']->delete();
             $resp = $this->respondSuccessWithoutData(__('messages.reset_successfully'));
             DB::commit();
@@ -100,6 +105,7 @@ class AuthController extends ApiController
         }
         return $resp;
     }
+
     public function changePassUser(ChangePassRequest $request): JsonResponse
     {
         DB::beginTransaction();
@@ -110,7 +116,7 @@ class AuthController extends ApiController
             if (!$user || !password_verify($request->validated('old_password'), $user->password)) {
                 throw new Exception(__('messages.change_fail'));
             }
-            $this->userRepo->changePassword($user, bcrypt($request->validated('new_password')));
+            $this->userRepo->changePassword(user: $user, password: bcrypt($request->validated('new_password')));
             $resp = $this->respondSuccessWithoutData(__('messages.change_successfully'));
 
             DB::commit();

@@ -2,7 +2,10 @@
 
 namespace App\Modules\User\Models;
 
+use App\Modules\Invoice\Models\Invoice;
+use App\Modules\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,4 +56,20 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
     protected $casts = [
         'password' => 'hashed',
     ];
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'user_id');
+    }
+    public function invoicesPaid(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'user_id_paid');
+    }
+    public function invoicesCheckIn(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'user_id_check_in');
+    }
+    public function invoicesCheckOut(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'user_id_check_out');
+    }
 }
