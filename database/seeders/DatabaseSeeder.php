@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             RoomTypeSeeder::class,
             ServiceSeeder::class,
+            HotelSeeder::class,
         ]);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Enums\RoleTypeEnum;
 use App\Http\Controllers\ApiController;
+use App\Modules\File\Repositories\Interfaces\FileInterface;
+use App\Modules\User\Models\User;
 use App\Modules\User\Repositories\Interfaces\UserInterface;
 use App\Modules\User\Requests\CreateUserRequest;
 use App\Modules\User\Requests\GetUserByUserIdRequest;
@@ -18,11 +20,12 @@ use RuntimeException;
 class UserController extends ApiController
 {
     protected UserInterface $userRepo;
+    protected FileInterface $fileRepo;
 
-    public function __construct(UserInterface $user)
+    public function __construct(UserInterface $user, FileInterface $fileRepo)
     {
         $this->userRepo = $user;
-
+        $this->fileRepo = $fileRepo;
     }
 
     public function createUser(CreateUserRequest $request): JsonResponse
@@ -35,7 +38,12 @@ class UserController extends ApiController
         try {
             DB::beginTransaction();
             $user = $this->userRepo->create($postData);
-            $data = fractal($user, new UserTransformer())->toArray();
+            if ($request->hasFile('avatar')) {
+                $file = $request->file('avatar');
+                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
+                $postData['avatar'] = $filePath;
+            }
+            $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (\Exception $e) {
@@ -52,7 +60,12 @@ class UserController extends ApiController
             DB::beginTransaction();
             $postData['role_type'] = RoleTypeEnum::CUSTOMER->value;
             $user = $this->userRepo->create($postData);
-            $data = fractal($user, new UserTransformer())->toArray();
+            if ($request->hasFile('avatar')) {
+                $file = $request->file('avatar');
+                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
+                $postData['avatar'] = $filePath;
+            }
+            $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
             DB::commit();
             if (Auth::attempt(['email' => $postData['email'], 'password' => $postData['password']])) {
                 $auth_user = Auth::user();
@@ -75,7 +88,7 @@ class UserController extends ApiController
     public function getMyInfo(): JsonResponse
     {
         $user = Auth::user();
-        $data = fractal($user, new UserTransformer())->toArray();
+        $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
         return $this->respondSuccess($data);
     }
 
@@ -86,8 +99,8 @@ class UserController extends ApiController
             return $this->respondError(__('messages.access_denied'));
         }
         try {
-            $user = $this->userRepo->find($request->user_id);
-            $data = fractal($user, new UserTransformer())->toArray();
+            $user = $this->fileRepo->findWithFile(modelType: User::class, modelId: $request->user_id);
+            $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
         } catch (\Exception $e) {
             $response = $this->respondError($e->getMessage(), 400);
@@ -108,7 +121,7 @@ class UserController extends ApiController
             $conditions['role_type'] = $request->validated('type');
         }
         $users = $this->userRepo->getData(['*'], $conditions, ['created_at' => 'desc'], $perPage);
-        $data = fractal($users, new UserTransformer())->toArray();
+        $data = fractal($users, new UserTransformer())->parseIncludes(['files'])->toArray();
         return $this->respondSuccess($data);
     }
 
@@ -129,9 +142,15 @@ class UserController extends ApiController
                 $postData['password'] = bcrypt($postData['password']);
             }
             $user->fill($postData);
+            if ($request->hasFile('avatar')) {
+                $user->files()->delete();
+                $file = $request->file('avatar');
+                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
+                $postData['avatar'] = $filePath;
+            }
             $user->save();
             DB::commit();
-            $user = fractal($user, new UserTransformer())->toArray();
+            $user = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
             $resp = $this->respondSuccess($user);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -149,6 +168,7 @@ class UserController extends ApiController
         $user = $this->userRepo->find($request->user_id);
         if ($user) {
             $user->delete();
+            $user->files()->delete();
             return $this->respondSuccess(__('messages.delete_successfully'));
         }
         return $this->respondError(__('messages.not_found'));

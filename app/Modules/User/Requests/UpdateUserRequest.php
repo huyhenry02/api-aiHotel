@@ -37,6 +37,7 @@ class UpdateUserRequest extends CommonRequest
             'password' => 'string|max:255',
             'email' => 'email|string|unique:users,email',
             'age' => 'numeric',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
     public function attributes(): Application|array|string|Translator|ContractsApplication|null

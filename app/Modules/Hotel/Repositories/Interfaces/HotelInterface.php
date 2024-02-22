@@ -6,4 +6,5 @@ use App\Repositories\Interfaces\RepositoryInterface;
 
 interface HotelInterface extends RepositoryInterface
 {
+    public function findWithBanner($id);
 }

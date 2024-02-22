@@ -2,10 +2,12 @@
 
 namespace App\Modules\User\Models;
 
+use App\Modules\File\Models\File;
 use App\Modules\Invoice\Models\Invoice;
 use App\Modules\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -71,5 +73,9 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
     public function invoicesCheckOut(): HasMany
     {
         return $this->hasMany(Invoice::class, 'user_id_check_out');
+    }
+    public function files(): MorphMany
+    {
+        return $this->morphMany(File::class, 'file_model');
     }
 }

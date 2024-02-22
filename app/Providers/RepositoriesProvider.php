@@ -14,6 +14,7 @@ class RepositoriesProvider extends ServiceProvider
         $repositories = [
             'User',
             'Hotel',
+            'File',
             'Example',
             'Reservation',
             'Statistic',
@@ -27,5 +28,6 @@ class RepositoriesProvider extends ServiceProvider
                 'App\Modules\\' . $repository . '\Repositories\\' . $repository . 'Repository'
             );
         }
+
     }
 }
