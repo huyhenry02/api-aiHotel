@@ -84,6 +84,12 @@ class RoomTypeController extends ApiController
                 return $this->respondError(__('messages.not_found'));
             }
             $roomType->fill($postData);
+            if (isset($postData['image'])) {
+                $roomType->files()->delete();
+                $file = $request->file('image');
+                $filePath = $this->fileRepo->uploadFile($file, RoomType::class, $roomType->id, 'image');
+                $postData['image'] = $filePath;
+            }
             $roomType->save();
             $data = fractal($roomType, new RoomTypeTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);

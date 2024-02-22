@@ -28,6 +28,7 @@ class UpdateRoomTypeRequest extends CommonRequest
             'code' => 'string|max:255',
             'price' => 'numeric',
             'description' => 'nullable|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ];
     }

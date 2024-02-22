@@ -1,0 +1,10 @@
+{
+    "name": "Super Admin",
+    "role_type": "admin",
+    "address": "Ai-Hotel",
+    "phone": "0123456789",
+    "email": "admin@gmail.com",
+    "password": "Admin@123",
+    "age": 30,
+    "identification": "123456789"
+}

@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Standard Room",
+        "code": "STD",
+        "price": 100,
+        "description": "Phòng tiêu chuẩn với các tiện nghi cơ bản như giường đôi hoặc hai giường đơn, TV, điều hòa nhiệt độ và phòng tắm riêng."
+    },
+    {
+        "name": "Deluxe Room",
+        "code": "DLX",
+        "price": 150,
+        "description": "Phòng lớn hơn với nội thất và tiện nghi cao cấp hơn, có thể bao gồm ghế sofa, minibar và tầm nhìn tốt hơn."
+    },
+    {
+        "name": "Suite",
+        "code": "STE",
+        "price": 250,
+        "description": "Phòng lớn với khu vực sống riêng, phòng ngủ riêng biệt và các tiện nghi cao cấp như bồn tắm jacuzzi, dịch vụ phòng 24/7 và truy cập vào các khu vực riêng lẻ."
+    },
+    {
+        "name": "Family Room",
+        "code": "FAM",
+        "price": 120,
+        "description": "Phòng chuyên dành cho gia đình với giường đôi và giường đơn hoặc giường tầng, có thể đi kèm với các tiện ích như trò chơi và đồ chơi cho trẻ em."
+    },
+    {
+        "name": "Executive Room",
+        "code": "EXE",
+        "price": 180,
+        "description": "Phòng dành cho doanh nhân với các tiện ích như máy tính xách tay, bàn làm việc và dịch vụ làm việc."
+    },
+    {
+        "name": "Special Room",
+        "code": "SPL",
+        "price": 200,
+        "description": "Phòng được thiết kế đặc biệt với trang thiết bị và trang trí riêng, có thể bao gồm các tiện ích độc đáo như bể tắm nước nóng riêng tư."
+    },
+    {
+        "name": "Sea View Room",
+        "code": "SEA",
+        "price": 180,
+        "description": "Phòng có tầm nhìn tuyệt vời về biển hoặc cảnh đẹp tự nhiên, thường có ban công riêng."
+    },
+    {
+        "name": "Non-Smoking Room",
+        "code": "NON",
+        "price": 110,
+        "description": "Phòng dành cho khách không hút thuốc, với nội thất và không gian không hút thuốc."
+    },
+    {
+        "name": "Conference Room",
+        "code": "CONF",
+        "price": 300,
+        "description": "Phòng chuyên dành cho tổ chức hội nghị và sự kiện, có trang thiết bị âm thanh và trực tuyến."
+    },
+    {
+        "name": "Accessible Room",
+        "code": "ACC",
+        "price": 130,
+        "description": "Phòng thiết kế để đáp ứng các yêu cầu của khách có khuyết tật, với các tiện ích như cầu thang và phòng tắm dành cho người tàn tật."
+    }
+]

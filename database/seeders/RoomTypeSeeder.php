@@ -9,16 +9,16 @@ class RoomTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        $file = fopen('database/seeders/SeedFiles/room_type.csv', 'r');
-        while (($line = fgetcsv($file)) !== FALSE) {
-            $roomType = new RoomType();
-            $roomType->name = $line[0];
-            $roomType->code = $line[1];
-            $roomType->price = $line[2];
-            $roomType->description = $line[3];
+        $json = file_get_contents(database_path('seeders/SeedFiles/room_type.json'));
+        $data = json_decode($json);
 
-            $roomType->save();
+        foreach ($data as $item) {
+            RoomType::create([
+                'name' => $item->name,
+                'price' => $item->price,
+                'code' => $item->code,
+                'description' => $item->description,
+            ]);
         }
-        fclose($file);
     }
 }

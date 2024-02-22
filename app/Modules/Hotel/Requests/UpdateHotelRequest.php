@@ -22,13 +22,12 @@ class UpdateHotelRequest extends CommonRequest
      */
     public function rules(): array
     {
-        $this->dd($this->all());
         return [
             'hotel_id' => 'required|integer',
             'name' => 'string|max:255',
             'address' => 'string|max:255',
             'room_types' => 'array',
-            'banner' => 'nullable|string|max:255',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'nullable|string|max:255',
         ];
     }

@@ -88,7 +88,15 @@ class HotelController extends ApiController
                 return $this->respondError(__('messages.not_found'));
             }
             $hotel->fill($postData);
-            $hotel->roomTypes()->sync($postData['room_types']);
+            if (isset($postData['room_types'])) {
+                $hotel->roomTypes()->sync($postData['room_types']);
+            }
+            if (isset($postData['banner'])) {
+                $hotel->files()->delete();
+                $file = $request->file('banner');
+                $filePath = $this->fileRepo->uploadFile($file, Hotel::class, $hotel->id, 'banner');
+                $postData['banner'] = $filePath;
+            }
             $hotel->save();
             $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);

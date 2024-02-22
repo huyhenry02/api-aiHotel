@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Service Name 1",
+        "description": "Service Description 1",
+        "price": 100
+    },
+    {
+        "name": "Service Name 2",
+        "description": "Service Description 2",
+        "price": 200
+    },
+    {
+        "name": "Service Name 3",
+        "description": "Service Description 3",
+        "price": 300
+    },
+    {
+        "name": "Service Name 4",
+        "description": "Service Description 4",
+        "price": 400
+    },
+    {
+        "name": "Service Name 5",
+        "description": "Service Description 5",
+        "price": 500
+    },
+    {
+        "name": "Service Name 6",
+        "description": "Service Description 6",
+        "price": 600
+    },
+    {
+        "name": "Service Name 7",
+        "description": "Service Description 7",
+        "price": 700
+    },
+    {
+        "name": "Service Name 8",
+        "description": "Service Description 8",
+        "price": 800
+    },
+    {
+        "name": "Service Name 9",
+        "description": "Service Description 9",
+        "price": 900
+    },
+    {
+        "name": "Service Name 10",
+        "description": "Service Description 10",
+        "price": 1000
+    }
+]

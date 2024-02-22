@@ -23,22 +23,20 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        try {
-            DB::beginTransaction();
-            $this->userRepo->create([
-                'name' => 'Super Admin',
-                'role_type' => RoleTypeEnum::ADMIN->value,
-                'address' => 'Ai-Hotel',
-                'phone' => '0123456789',
-                'email' => 'admin@gmail.com',
-                'password' => bcrypt('Admin@123'),
-                'identification' => '123456789',
-                'age' => 30,
+        $json = file_get_contents(database_path('seeders/SeedFiles/user.json'));
+        $data = json_decode($json);
+
+
+            User::create([
+                'name' => $data->name,
+                'role_type' => $data->role_type,
+                'address' => $data->address,
+                'phone' => $data->phone,
+                'email' => $data->email,
+                'password' => bcrypt($data->password),
+                'age' => $data->age,
+                'identification' => $data->identification,
             ]);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            echo $e->getMessage() . "\n";
-        }
+
     }
 }

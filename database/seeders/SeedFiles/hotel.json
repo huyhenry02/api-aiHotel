@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Hotel 1",
+        "address": "Location 1",
+        "description": "Description 1",
+        "room_types" : [
+            1,2,3,4,5
+        ]
+    },
+    {
+        "name": "Hotel 2",
+        "address": "Location 2",
+        "description": "Description 2",
+        "room_types" : [
+            1,2,7,8,9
+        ]
+    },
+    {
+        "name": "Hotel 3",
+        "address": "Location 3",
+        "description": "Description 3",
+        "room_types" : [
+            3,4,6,7,8
+        ]
+    },
+    {
+        "name": "Hotel 4",
+        "address": "Location 4",
+        "description": "Description 4",
+        "room_types" : [
+            1,6,7,3,5
+        ]
+    },
+    {
+        "name": "Hotel 5",
+        "address": "Location 5",
+        "description": "Description 5",
+        "room_types" : [
+           1,4,5,6,9
+        ]
+    }
+]

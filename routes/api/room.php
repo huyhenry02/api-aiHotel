@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'prefix' => 'room-type', 'middleware' => 'auth:api'], function () {
     Route::post('create', [RoomTypeController::class, 'createRoomType']);
-    Route::post('update', [RoomTypeController::class, 'updateRoomType']);
+    Route::put('update', [RoomTypeController::class, 'updateRoomType']);
     Route::get('get-list{hotel_id?}', [RoomTypeController::class, 'getRoomTypes']);
     Route::get('detail{room_type_id?}', [RoomTypeController::class, 'getOneRoomType']);
     Route::delete('delete{room_type_id?}', [RoomTypeController::class, 'deleteRoomType']);

@@ -142,6 +142,12 @@ class UserController extends ApiController
                 $postData['password'] = bcrypt($postData['password']);
             }
             $user->fill($postData);
+            if ($request->hasFile('avatar')) {
+                $user->files()->delete();
+                $file = $request->file('avatar');
+                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
+                $postData['avatar'] = $filePath;
+            }
             $user->save();
             DB::commit();
             $user = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
