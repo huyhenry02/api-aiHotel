@@ -31,7 +31,7 @@ class HotelController extends ApiController
         try {
             $postData = $request->validated('per_page', 15);
             $hotels = $this->hotelRepo->getData(perPage: $postData);
-            $data = fractal($hotels, new HotelTransformer())->toArray();
+            $data = fractal($hotels, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
@@ -42,13 +42,12 @@ class HotelController extends ApiController
     public function getOneHotel(GetOneHotelRequest $request): JsonResponse
     {
         try {
-            $hotel = $this->hotelRepo->findWithBanner($request['hotel_id']);
-            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
-            $hotel = $this->hotelRepo->find($request['hotel_id']);
+            $postData = $request->validated();
+            $hotel = $this->fileRepo->findWithFile(modelType: Hotel::class, modelId: $postData['hotel_id']);
             if (!$hotel) {
                 throw new Exception(__('messages.not_found'));
             }
-            $data = fractal($hotel, new HotelTransformer())->toArray();
+            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
@@ -68,9 +67,8 @@ class HotelController extends ApiController
                 $filePath = $this->fileRepo->uploadFile($file, Hotel::class, $hotel->id, 'banner');
                 $postData['banner'] = $filePath;
             }
-            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $hotel->roomTypes()->sync($room_types);
-            $data = fractal($hotel, new HotelTransformer())->toArray();
+            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {
@@ -82,7 +80,6 @@ class HotelController extends ApiController
 
     public function updateHotel(UpdateHotelRequest $request): JsonResponse
     {
-
         $postData = $request->validated();
         try {
             DB::beginTransaction();
@@ -93,7 +90,7 @@ class HotelController extends ApiController
             $hotel->fill($postData);
             $hotel->roomTypes()->sync($postData['room_types']);
             $hotel->save();
-            $data = fractal($hotel, new HotelTransformer())->toArray();
+            $data = fractal($hotel, new HotelTransformer())->parseIncludes(['files'])->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {
@@ -110,6 +107,7 @@ class HotelController extends ApiController
             $hotel = $this->hotelRepo->find($request['hotel_id']);
             $hotel->delete();
             $hotel->roomTypes()->detach();
+            $hotel->files()->delete();
             $response = $this->respondSuccess(__('messages.delete_successfully'));
             DB::commit();
         } catch (Exception $e) {

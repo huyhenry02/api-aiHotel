@@ -22,6 +22,7 @@ class UpdateHotelRequest extends CommonRequest
      */
     public function rules(): array
     {
+        $this->dd($this->all());
         return [
             'hotel_id' => 'required|integer',
             'name' => 'string|max:255',

@@ -12,6 +12,8 @@
 >docker exec -it ai_hotel-api php artisan migrate
 
 >docker exec -it ai_hotel-api php artisan passport:install --force
+- To get storage file, please run
+>docker exec -it ai_hotel-api php artisan storage:link
 
 > Hostname: localhost
 >

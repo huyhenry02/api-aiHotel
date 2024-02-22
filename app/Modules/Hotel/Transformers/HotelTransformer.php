@@ -12,6 +12,7 @@ class HotelTransformer extends TransformerAbstract
     protected array $availableIncludes = [
         'files'
     ];
+
     public function transform(Hotel $hotel): array
     {
         return [
@@ -30,8 +31,12 @@ class HotelTransformer extends TransformerAbstract
             'description' => $hotel->description ?? '',
         ];
     }
-    public function includeFiles(Hotel $hotel): Collection
+
+    public function includeFiles(Hotel $hotel): ?Collection
     {
-        return $this->collection($hotel->files, new FileTransformer());
+        if ($hotel->files) {
+            return $this->collection($hotel->files, new FileTransformer());
+        }
+        return null;
     }
 }

@@ -21,7 +21,9 @@ class FileRepository extends BaseRepository implements FileInterface
     }
     public function uploadFile(UploadedFile $file, string $modelType, int $modelId, string $collection): string
     {
-        $fileName = time() . '_' . $file->getClientOriginalName();
+        $modelInstance = new $modelType;
+        $tableName = $modelInstance->getTable();
+        $fileName = $collection . '_' . $tableName . '_' . $modelId;
         $filePath = $file->storeAs('uploads', $fileName, 'public');
         $file = new File;
         $file->path = $filePath;
@@ -31,5 +33,16 @@ class FileRepository extends BaseRepository implements FileInterface
         $file->original_url = asset('storage/' . $filePath);
         $file->save();
         return asset('storage/' . $filePath);
+    }
+
+    /**
+     * @param string $modelType
+     * @param int $modelId
+     * @return mixed
+     */
+    public function findWithFile(string $modelType, int $modelId): mixed
+    {
+        $modelInstance = new $modelType;
+        return $modelInstance::with('files')->find($modelId);
     }
 }
