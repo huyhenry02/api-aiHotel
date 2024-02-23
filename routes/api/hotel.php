@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('hotel/list-hotels{per_page?}{page?}', [HotelController::class, 'getListHotels']);
 Route::group([
-    'prefix' => '',
+    'prefix' => 'hotel',
     'middleware' => 'auth:api'
 ], function () {
     Route::post('create-hotel', [HotelController::class, 'createHotel']);
