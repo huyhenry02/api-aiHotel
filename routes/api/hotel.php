@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('hotel/list-hotels{per_page?}{page?}', [HotelController::class, 'getListHotels']);
 Route::group([
-    'prefix' => 'hotel',
+    'prefix' => '',
     'middleware' => 'auth:api'
 ], function () {
     Route::post('create-hotel', [HotelController::class, 'createHotel']);
-    Route::get('list-hotels{per_page?}{page?}', [HotelController::class, 'getListHotels']);
     Route::get('detail{hotel_id?}', [HotelController::class, 'getOneHotel']);
     Route::put('update-hotel', [HotelController::class, 'updateHotel']);
     Route::delete('delete-hotel', [HotelController::class, 'deleteHotel']);
