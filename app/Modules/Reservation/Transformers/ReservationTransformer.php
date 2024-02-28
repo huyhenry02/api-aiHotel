@@ -54,10 +54,12 @@ class ReservationTransformer extends TransformerAbstract
         ];
     }
 
-    public function includeInvoice(Reservation $reservation): Item
+    public function includeInvoice(Reservation $reservation): ?Item
     {
-        $invoice = $reservation->invoice;
-        return $this->item($invoice, new InvoiceTransformer());
+        if ($reservation->invoice) {
+        return $this->item($reservation->invoice, new InvoiceTransformer());
+        }
+        return null;
     }
     public function includeServices(Reservation $reservation): ?Collection
     {
