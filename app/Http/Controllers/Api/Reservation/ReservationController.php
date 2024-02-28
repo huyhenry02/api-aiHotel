@@ -142,7 +142,7 @@ class ReservationController extends ApiController
             if (!$reservation) {
                 return $this->respondError(__('messages.not_found'));
             }
-            $data = fractal($reservation, new ReservationTransformer())->toArray();
+            $data = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice','services'])->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
