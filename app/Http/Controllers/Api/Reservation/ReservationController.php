@@ -99,7 +99,7 @@ class ReservationController extends ApiController
             ]);
             $reservation->invoice_id = $invoice->id;
             $reservation->save();
-            $dataReservation = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice','services'])->toArray();
+            $dataReservation = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice', 'services'])->toArray();
             $response = $this->respondSuccess($dataReservation);
             DB::commit();
         } catch (Exception $e) {
@@ -127,7 +127,7 @@ class ReservationController extends ApiController
             $reservation->save();
             $invoice = $this->invoiceRepo->find($reservation->invoice_id);
             $this->invoiceRepo->checkOutInvoice($invoice, $reservation->check_in, $reservation->check_out);
-            $data = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice','services'])->toArray();
+            $data = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice', 'services'])->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {
@@ -144,7 +144,7 @@ class ReservationController extends ApiController
             if (!$reservation) {
                 return $this->respondError(__('messages.not_found'));
             }
-            $data = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice','services'])->toArray();
+            $data = fractal($reservation, new ReservationTransformer())->parseIncludes(['invoice', 'services'])->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
@@ -170,6 +170,19 @@ class ReservationController extends ApiController
         try {
             $postData = $request->validated();
             $reservations = $this->reservationRepo->filterReservation(filters: $postData);
+            $data = fractal($reservations, new ReservationTransformer())->toArray();
+            $response = $this->respondSuccess($data);
+        } catch (Exception $e) {
+            $response = $this->respondError($e->getMessage());
+        }
+        return $response;
+    }
+
+    public function getMyReservations(PaginationRequest $request): JsonResponse
+    {
+        try {
+            $postData = $request->validated('per_page', 15);
+            $reservations = $this->reservationRepo->getMyReservations(userId: Auth::id(), perPage: $postData);
             $data = fractal($reservations, new ReservationTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {

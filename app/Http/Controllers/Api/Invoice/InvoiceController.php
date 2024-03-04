@@ -12,8 +12,6 @@ use App\Modules\Invoice\Requests\VerifyPaymentInvoiceRequest;
 use App\Modules\Invoice\Transformers\InvoiceTransformer;
 use App\Modules\Payment\Services\PaymentService;
 use Exception;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 
 class InvoiceController extends ApiController

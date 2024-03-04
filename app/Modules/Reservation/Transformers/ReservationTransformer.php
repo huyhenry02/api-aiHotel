@@ -26,6 +26,9 @@ class ReservationTransformer extends TransformerAbstract
                 'name' => $reservation->user->name,
                 'email' => $reservation->user->email,
                 'phone' => $reservation->user->phone,
+                'address' => $reservation->user->address,
+                'age' => $reservation->user->age,
+                'identification' => $reservation->user->identification,
             ],
             'hotel' => [
                 'id' => $reservation->room->hotel->id,

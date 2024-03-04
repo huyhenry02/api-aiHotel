@@ -22,4 +22,11 @@ interface ReservationInterface extends RepositoryInterface
      */
     public function getReservationStatistics(DateTime $startDate, DateTime $endDate): mixed;
 
+    /**
+     * @param int $userId
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function getMyReservations(int $userId, int $perPage = 15): LengthAwarePaginator;
+
 }

@@ -72,4 +72,16 @@ class ReservationRepository extends BaseRepository implements ReservationInterfa
     {
         return $this->_model->whereBetween('created_at', [$startDate, $endDate])->get();
     }
+
+    /**
+     * @param int $userId
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function getMyReservations(int $userId, int $perPage = 15): LengthAwarePaginator
+    {
+        $query = $this->_model->query();
+        $query->where('user_id', $userId);
+        return $query->paginate($perPage);
+    }
 }

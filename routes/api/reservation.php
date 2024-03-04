@@ -24,6 +24,7 @@ Route::group([
     Route::get('detail{reservation_id?}', [ReservationController::class, 'getOneReservation']);
     Route::get('list{per_page?}{page?}', [ReservationController::class, 'getListReservations']);
     Route::get('filter-reservation{per_page?}{page?}', [ReservationController::class, 'filterReservation']);
+    Route::get('get-my-reservations{per_page?}{page?}', [ReservationController::class, 'getMyReservations']);
 });
 
 
