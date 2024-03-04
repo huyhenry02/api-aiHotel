@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Reservation;
 
+use App\Broadcasting\RoomChannel;
 use App\Enums\ReservationStatusEnum;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\PaginationRequest;
@@ -44,6 +45,7 @@ class ReservationController extends ApiController
             $reservation->code = 'RSV' . $reservation->id;
             $reservation->save();
             $data = fractal($reservation, new ReservationTransformer())->toArray();
+            RoomChannel::dispatch($postData['room_id'], $postData['start_date'], $postData['end_date']);
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {

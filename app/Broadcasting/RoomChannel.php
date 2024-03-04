@@ -5,8 +5,6 @@ namespace App\Broadcasting;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -16,12 +14,17 @@ class RoomChannel implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private $roomId;
+    private $startDate;
+    private $endDate;
+
     /**
      * Create a new channel instance.
      */
-    public function __construct($roomId)
+    public function __construct($roomId, $startDate, $endDate)
     {
         $this->roomId = $roomId;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
@@ -39,7 +42,7 @@ class RoomChannel implements ShouldBroadcastNow
      */
     public function broadcastWith(): array
     {
-        return ['data' => 'Good morning', 'room_id' => $this->roomId];
+        return ['room_id' => $this->roomId, 'start_date' => $this->startDate, 'end_date' => $this->endDate];
     }
 
     /**
@@ -49,16 +52,16 @@ class RoomChannel implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'test.event';
+        return 'booked.event.' . $this->roomId;
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return Channel
      */
     public function broadcastOn()
     {
-        return new Channel('test-channel');
+        return new Channel('booked-channel');
     }
 }
