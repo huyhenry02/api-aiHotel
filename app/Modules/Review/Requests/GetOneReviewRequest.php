@@ -5,7 +5,7 @@ namespace App\Modules\Review\Requests;
 use App\Http\Requests\CommonRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class CreateReviewRequest extends CommonRequest
+class GetOneReviewRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,7 @@ class CreateReviewRequest extends CommonRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|string',
-            'rating' => 'required|numeric|min:1|max:5',
-            'hotel_id' => 'required|numeric|exists:hotels,id',
+           'review_id' => 'required|numeric|exists:reviews,id',
         ];
     }
 }

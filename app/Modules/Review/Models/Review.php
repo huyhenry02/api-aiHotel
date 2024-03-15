@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Review extends BaseModel
 {
-    use SoftDeletes;
 
     public $table = 'reviews';
     /**
@@ -48,6 +47,6 @@ class Review extends BaseModel
     }
     public function responseReview(): HasMany
     {
-        return $this->hasMany(Response_Review::class, 'review_id');
+        return $this->hasMany(ResponseReview::class, 'review_id');
     }
 }

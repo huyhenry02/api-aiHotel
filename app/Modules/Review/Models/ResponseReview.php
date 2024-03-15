@@ -7,10 +7,8 @@ use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Response_Review extends BaseModel
+class ResponseReview extends BaseModel
 {
-    use SoftDeletes;
-
     public $table = 'response_reviews';
     /**
      * The attributes that are mass assignable.

@@ -2,13 +2,12 @@
 
 namespace App\Modules\Review\Repositories;
 
-use App\Modules\Example\Repositories\Interfaces\ExampleInterface;
-use App\Modules\Review\Models\Response_Review;
-use App\Modules\Review\Models\Review;
+use App\Modules\Review\Models\ResponseReview;
+use App\Modules\Review\Repositories\Interfaces\ResponseReviewInterface;
 use App\Repositories\BaseRepository;
 
 
-class ResponseReviewRepository extends BaseRepository implements ExampleInterface
+class ResponseReviewRepository extends BaseRepository implements ResponseReviewInterface
 {
     /**
      * getModel
@@ -17,6 +16,6 @@ class ResponseReviewRepository extends BaseRepository implements ExampleInterfac
      */
     public function getModel(): string
     {
-        return Response_Review::class;
+        return ResponseReview::class;
     }
 }
