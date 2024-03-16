@@ -5,6 +5,7 @@ namespace App\Modules\User\Models;
 use App\Modules\File\Models\File;
 use App\Modules\Invoice\Models\Invoice;
 use App\Modules\Reservation\Models\Reservation;
+use App\Modules\Review\Models\Review;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -77,5 +78,9 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'file_model');
+    }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id');
     }
 }

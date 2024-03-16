@@ -13,3 +13,4 @@ require ('api/statistic.php');
 require ('api/payment.php');
 require ('api/service.php');
 require ('api/invoice.php');
+require ('api/review.php');

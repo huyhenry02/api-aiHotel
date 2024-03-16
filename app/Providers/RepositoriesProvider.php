@@ -28,6 +28,16 @@ class RepositoriesProvider extends ServiceProvider
                 'App\Modules\\' . $repository . '\Repositories\\' . $repository . 'Repository'
             );
         }
+        $subRepositories = [
+            'Review.ResponseReview',
+            'Review.Review',
+        ];
+        foreach ($subRepositories as $subRepository) {
+            [$parentRepository, $subRepository] = explode('.', $subRepository);
+            $this->app->bind('App\Modules\\' . $parentRepository . '\Repositories\Interfaces\\' . $subRepository . 'Interface',
+                'App\Modules\\' . $parentRepository . '\Repositories\\' . $subRepository . 'Repository'
+            );
+        }
 
     }
 }
