@@ -18,4 +18,13 @@ class ResponseReviewRepository extends BaseRepository implements ResponseReviewI
     {
         return ResponseReview::class;
     }
+
+    /**
+     * @param int $reviewId
+     * @return mixed
+     */
+    public function getListResponseInReview(int $reviewId): mixed
+    {
+        return $this->_model->where('review_id', $reviewId)->get();
+    }
 }

@@ -23,6 +23,13 @@ Route::group([
     Route::get('detail{review_id?}', [ReviewController::class, 'getOneReview']);
     Route::get('filter', [ReviewController::class, 'filterReviews']);
     Route::delete('delete', [ReviewController::class, 'deleteReview']);
+    Route::group([
+        'prefix' => 'response',
+    ], function () {
+        Route::post('create', [ReviewController::class, 'createResponse']);
+        Route::get('list{review_id?}', [ReviewController::class, 'getListResponseInReview']);
+        Route::delete('delete', [ReviewController::class, 'deleteResponse']);
+    });
 });
 
 

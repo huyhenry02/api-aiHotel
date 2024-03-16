@@ -29,7 +29,7 @@ class RepositoriesProvider extends ServiceProvider
             );
         }
         $subRepositories = [
-            'Review.Response_Review',
+            'Review.ResponseReview',
             'Review.Review',
         ];
         foreach ($subRepositories as $subRepository) {
