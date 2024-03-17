@@ -3,6 +3,7 @@
 namespace App\Modules\User\Transformers;
 
 use App\Modules\File\Transformers\FileTransformer;
+use App\Modules\Reservation\Transformers\ReservationTransformer;
 use App\Modules\User\Models\User;
 use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
@@ -10,7 +11,8 @@ use League\Fractal\TransformerAbstract;
 class UserTransformer extends TransformerAbstract
 {
     protected array $availableIncludes = [
-        'files'
+        'files',
+        'reservations'
     ];
 
     public function transform(User $user): array
@@ -31,6 +33,14 @@ class UserTransformer extends TransformerAbstract
     {
         if ($user->files) {
             return $this->collection($user->files, new FileTransformer());
+        }
+        return null;
+    }
+
+    public function includeReservations(User $user): ?Collection
+    {
+        if ($user->reservations) {
+            return $this->collection($user->reservations, new ReservationTransformer());
         }
         return null;
     }

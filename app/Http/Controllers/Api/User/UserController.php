@@ -88,7 +88,7 @@ class UserController extends ApiController
     public function getMyInfo(): JsonResponse
     {
         $user = Auth::user();
-        $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
+        $data = fractal($user, new UserTransformer())->parseIncludes(['files','reservations'])->toArray();
         return $this->respondSuccess($data);
     }
 
