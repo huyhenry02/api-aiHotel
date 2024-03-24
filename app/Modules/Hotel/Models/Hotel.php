@@ -43,8 +43,4 @@ class Hotel extends BaseModel
     {
         return $this->belongsToMany(RoomType::class,'hotel_has_room_types', 'hotel_id', 'room_type_id');
     }
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class, 'hotel_id');
-    }
 }

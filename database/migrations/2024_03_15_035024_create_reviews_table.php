@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('hotel_id')->unsigned();
+            $table->bigInteger('room_id')->unsigned();
             $table->text('content');
             $table->integer('rating');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('hotel_id')->references('id')->on('hotels');
+            $table->foreign('room_id')->references('id')->on('rooms');
             $table->timestamps();
         });
     }

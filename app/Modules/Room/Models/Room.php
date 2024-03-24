@@ -5,6 +5,7 @@ namespace App\Modules\Room\Models;
 use App\Models\BaseModel;
 use App\Modules\Hotel\Models\Hotel;
 use App\Modules\Reservation\Models\Reservation;
+use App\Modules\Review\Models\Review;
 use App\Modules\RoomType\Models\RoomType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,5 +48,9 @@ class Room extends BaseModel
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class, 'room_id');
+    }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'hotel_id');
     }
 }

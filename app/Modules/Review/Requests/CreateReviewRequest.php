@@ -25,7 +25,7 @@ class CreateReviewRequest extends CommonRequest
         return [
             'content' => 'required|string',
             'rating' => 'required|numeric|min:1|max:5',
-            'hotel_id' => 'required|numeric|exists:hotels,id',
+            'room_id' => 'required|numeric|exists:rooms,id',
         ];
     }
 }

@@ -1,10 +1,202 @@
-{
-    "name": "Super Admin",
-    "role_type": "admin",
-    "address": "Ai-Hotel",
-    "phone": "0123456789",
-    "email": "admin@gmail.com",
-    "password": "Admin@123",
-    "age": 30,
-    "identification": "123456789"
-}
+[
+    {
+        "name": "Super admin",
+        "role_type": "admin",
+        "address": "Ai-Hotel",
+        "phone": "0123456789",
+        "email": "admin@gmail.com",
+        "password": "Admin@123",
+        "age": 30,
+        "identification": "123456789"
+    },
+    {
+        "name": "Customer A",
+        "role_type": "customer",
+        "address": "Ai-Hotel",
+        "phone": "0111111111",
+        "email": "customer_a@gmail.com",
+        "password": "Admin@123",
+        "age": 30,
+        "identification": "111111111"
+    },
+    {
+        "name": "Customer B",
+        "role_type": "customer",
+        "address": "Beta-Resort",
+        "phone": "0222222222",
+        "email": "customer_b@gmail.com",
+        "password": "Admin@123",
+        "age": 35,
+        "identification": "222222222"
+    },
+    {
+        "name": "Customer C",
+        "role_type": "customer",
+        "address": "Charlie-Inn",
+        "phone": "0333333333",
+        "email": "customer_c@gmail.com",
+        "password": "Admin@123",
+        "age": 40,
+        "identification": "333333333"
+    },
+    {
+        "name": "Customer D",
+        "role_type": "customer",
+        "address": "Delta-Hotel",
+        "phone": "0444444444",
+        "email": "customer_d@gmail.com",
+        "password": "Admin@123",
+        "age": 45,
+        "identification": "444444444"
+    },
+    {
+        "name": "Customer E",
+        "role_type": "customer",
+        "address": "Echo-Resort",
+        "phone": "0555555555",
+        "email": "customer_e@gmail.com",
+        "password": "Admin@123",
+        "age": 50,
+        "identification": "555555555"
+    },
+    {
+        "name": "Customer F",
+        "role_type": "customer",
+        "address": "Foxtrot-Inn",
+        "phone": "0666666666",
+        "email": "customer_f@gmail.com",
+        "password": "Admin@123",
+        "age": 55,
+        "identification": "666666666"
+    },
+    {
+        "name": "Customer G",
+        "role_type": "customer",
+        "address": "Gamma-Hotel",
+        "phone": "0777777777",
+        "email": "customer_g@gmail.com",
+        "password": "Admin@123",
+        "age": 60,
+        "identification": "777777777"
+    },
+    {
+        "name": "Customer H",
+        "role_type": "customer",
+        "address": "Hotel-Hotel",
+        "phone": "0888888888",
+        "email": "customer_h@gmail.com",
+        "password": "Admin@123",
+        "age": 65,
+        "identification": "888888888"
+    },
+    {
+        "name": "Customer I",
+        "role_type": "customer",
+        "address": "Innova-Resort",
+        "phone": "0999999999",
+        "email": "customer_i@gmail.com",
+        "password": "Admin@123",
+        "age": 70,
+        "identification": "999999999"
+    },
+    {
+        "name": "Customer J",
+        "role_type": "customer",
+        "address": "Juliett-Inn",
+        "phone": "1010101010",
+        "email": "customer_j@gmail.com",
+        "password": "Admin@123",
+        "age": 75,
+        "identification": "101010101"
+    },
+    {
+        "name": "Customer K",
+        "role_type": "customer",
+        "address": "Kilo-Hotel",
+        "phone": "1212121212",
+        "email": "customer_k@gmail.com",
+        "password": "Admin@123",
+        "age": 80,
+        "identification": "121212121"
+    },
+    {
+        "name": "Customer L",
+        "role_type": "customer",
+        "address": "Lima-Resort",
+        "phone": "1313131313",
+        "email": "customer_l@gmail.com",
+        "password": "Admin@123",
+        "age": 85,
+        "identification": "131313131"
+    },
+    {
+        "name": "Customer M",
+        "role_type": "customer",
+        "address": "Mike-Inn",
+        "phone": "1414141414",
+        "email": "customer_m@gmail.com",
+        "password": "Admin@123",
+        "age": 90,
+        "identification": "141414141"
+    },
+    {
+        "name": "Customer N",
+        "role_type": "customer",
+        "address": "November-Hotel",
+        "phone": "1515151515",
+        "email": "customer_n@gmail.com",
+        "password": "Admin@123",
+        "age": 95,
+        "identification": "151515151"
+    },
+    {
+        "name": "Customer O",
+        "role_type": "customer",
+        "address": "Oscar-Resort",
+        "phone": "1616161616",
+        "email": "customer_o@gmail.com",
+        "password": "Admin@123",
+        "age": 100,
+        "identification": "161616161"
+    },
+    {
+        "name": "Customer P",
+        "role_type": "customer",
+        "address": "Papa-Inn",
+        "phone": "1717171717",
+        "email": "customer_p@gmail.com",
+        "password": "Admin@123",
+        "age": 105,
+        "identification": "171717171"
+    },
+    {
+        "name": "Customer Q",
+        "role_type": "customer",
+        "address": "Quebec-Hotel",
+        "phone": "1818181818",
+        "email": "customer_q@gmail.com",
+        "password": "Admin@123",
+        "age": 110,
+        "identification": "181818181"
+    },
+    {
+        "name": "Customer R",
+        "role_type": "customer",
+        "address": "Romeo-Resort",
+        "phone": "1919191919",
+        "email": "customer_r@gmail.com",
+        "password": "Admin@123",
+        "age": 115,
+        "identification": "191919191"
+    },
+    {
+        "name": "Customer S",
+        "role_type": "customer",
+        "address": "Sierra-Inn",
+        "phone": "2020202020",
+        "email": "customer_s@gmail.com",
+        "password": "Admin@123",
+        "age": 120,
+        "identification": "202020202"
+    }
+]

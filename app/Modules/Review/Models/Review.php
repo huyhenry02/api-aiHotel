@@ -4,6 +4,7 @@ namespace App\Modules\Review\Models;
 
 use App\Models\BaseModel;
 use App\Modules\Hotel\Models\Hotel;
+use App\Modules\Room\Models\Room;
 use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,7 +22,7 @@ class Review extends BaseModel
 
     protected $fillable = [
         'user_id',
-        'hotel_id',
+        'room_id',
         'content',
         'rating',
     ];
@@ -41,9 +42,9 @@ class Review extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function hotel(): BelongsTo
+    public function room(): BelongsTo
     {
-        return $this->belongsTo(Hotel::class, 'hotel_id');
+        return $this->belongsTo(Room::class, 'room_id');
     }
     public function responseReview(): HasMany
     {

@@ -48,6 +48,4 @@ class RoomType extends BaseModel
     {
         return $this->belongsToMany(Hotel::class, 'hotel_has_room_types', 'hotel_id', 'room_type_id');
     }
-
-
 }

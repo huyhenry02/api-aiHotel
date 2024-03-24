@@ -27,16 +27,18 @@ class AdminSeeder extends Seeder
         $data = json_decode($json);
 
 
-            User::create([
-                'name' => $data->name,
-                'role_type' => $data->role_type,
-                'address' => $data->address,
-                'phone' => $data->phone,
-                'email' => $data->email,
-                'password' => bcrypt($data->password),
-                'age' => $data->age,
-                'identification' => $data->identification,
+        foreach ($data as $item) {
+             User::create([
+                'name' => $item->name,
+                'role_type' => $item->role_type,
+                'address' => $item->address,
+                'phone' => $item->phone,
+                'email' => $item->email,
+                'password' => bcrypt($item->password),
+                'age' => $item->age,
+                'identification' => $item->identification,
             ]);
+        }
 
     }
 }

@@ -18,10 +18,9 @@ class ReviewTransformer extends TransformerAbstract
             'id' => $review->id,
             'content' => $review->content,
             'rating' => $review->rating,
-            'hotel' => [
-                'id' => $review->hotel_id,
-                'name' => $review->hotel->name,
-                'address' => $review->hotel->address,
+            'room' => [
+                'id' => $review->room_id,
+                'code' => $review->room->code,
             ],
             'user' => [
                 'id' => $review->user_id,
