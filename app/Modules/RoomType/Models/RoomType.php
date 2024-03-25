@@ -24,6 +24,7 @@ class RoomType extends BaseModel
         'code',
         'description',
         'price',
+        'file'
     ];
 
     /**
@@ -40,10 +41,10 @@ class RoomType extends BaseModel
     {
         return $this->hasMany(Room::class, 'room_type_id');
     }
-    public function files(): MorphMany
-    {
-        return $this->morphMany(File::class, 'file_model');
-    }
+//    public function files(): MorphMany
+//    {
+//        return $this->morphMany(File::class, 'file_model');
+//    }
     public function hotels(): BelongsToMany
     {
         return $this->belongsToMany(Hotel::class, 'hotel_has_room_types', 'hotel_id', 'room_type_id');

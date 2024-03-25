@@ -43,7 +43,7 @@ class UserController extends ApiController
                 $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
                 $postData['avatar'] = $filePath;
             }
-            $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
+            $data = fractal($user, new UserTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (\Exception $e) {
@@ -65,7 +65,7 @@ class UserController extends ApiController
                 $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
                 $postData['avatar'] = $filePath;
             }
-            $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
+            $data = fractal($user, new UserTransformer())->toArray();
             DB::commit();
             if (Auth::attempt(['email' => $postData['email'], 'password' => $postData['password']])) {
                 $auth_user = Auth::user();
@@ -100,7 +100,7 @@ class UserController extends ApiController
         }
         try {
             $user = $this->fileRepo->findWithFile(modelType: User::class, modelId: $request->user_id);
-            $data = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
+            $data = fractal($user, new UserTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (\Exception $e) {
             $response = $this->respondError($e->getMessage(), 400);
@@ -121,7 +121,7 @@ class UserController extends ApiController
             $conditions['role_type'] = $request->validated('type');
         }
         $users = $this->userRepo->getData(['*'], $conditions, ['created_at' => 'desc'], $perPage);
-        $data = fractal($users, new UserTransformer())->parseIncludes(['files'])->toArray();
+        $data = fractal($users, new UserTransformer())->toArray();
         return $this->respondSuccess($data);
     }
 
@@ -150,7 +150,7 @@ class UserController extends ApiController
             }
             $user->save();
             DB::commit();
-            $user = fractal($user, new UserTransformer())->parseIncludes(['files'])->toArray();
+            $user = fractal($user, new UserTransformer())->toArray();
             $resp = $this->respondSuccess($user);
         } catch (\Exception $e) {
             DB::rollBack();

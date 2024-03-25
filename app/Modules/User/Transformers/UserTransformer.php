@@ -11,7 +11,7 @@ use League\Fractal\TransformerAbstract;
 class UserTransformer extends TransformerAbstract
 {
     protected array $availableIncludes = [
-        'files',
+//        'files',
         'reservations'
     ];
 
@@ -28,14 +28,14 @@ class UserTransformer extends TransformerAbstract
             'age' => $user->age ?? '',
         ];
     }
-
-    public function includeFiles(User $user): ?Collection
-    {
-        if ($user->files) {
-            return $this->collection($user->files, new FileTransformer());
-        }
-        return null;
-    }
+//
+//    public function includeFiles(User $user): ?Collection
+//    {
+//        if ($user->files) {
+//            return $this->collection($user->files, new FileTransformer());
+//        }
+//        return null;
+//    }
 
     public function includeReservations(User $user): ?Collection
     {

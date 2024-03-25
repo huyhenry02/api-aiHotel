@@ -35,6 +35,7 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
         'password',
         'identification',
         'age',
+        'file'
     ];
     /**
      * The primary key for the model.
@@ -75,10 +76,10 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
     {
         return $this->hasMany(Invoice::class, 'user_id_check_out');
     }
-    public function files(): MorphMany
-    {
-        return $this->morphMany(File::class, 'file_model');
-    }
+//    public function files(): MorphMany
+//    {
+//        return $this->morphMany(File::class, 'file_model');
+//    }
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'user_id');
