@@ -27,8 +27,7 @@ class CreateRoomTypeRequest extends CommonRequest
             'code' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'nullable|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-
+            'file' => 'nullable|string',
         ];
     }
 }

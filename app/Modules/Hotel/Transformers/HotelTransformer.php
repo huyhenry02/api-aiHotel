@@ -9,10 +9,6 @@ use League\Fractal\TransformerAbstract;
 
 class HotelTransformer extends TransformerAbstract
 {
-//    protected array $availableIncludes = [
-//        'files'
-//    ];
-
     public function transform(Hotel $hotel): array
     {
         return [
@@ -26,17 +22,11 @@ class HotelTransformer extends TransformerAbstract
                     'code' => $roomType->code,
                     'description' => $roomType->description,
                     'price' => $roomType->price,
+                    'file' => $roomType->file,
                 ];
             }),
             'description' => $hotel->description ?? '',
+            'file' => $hotel->file ?? '',
         ];
     }
-
-//    public function includeFiles(Hotel $hotel): ?Collection
-//    {
-//        if ($hotel->files) {
-//            return $this->collection($hotel->files, new FileTransformer());
-//        }
-//        return null;
-//    }
 }

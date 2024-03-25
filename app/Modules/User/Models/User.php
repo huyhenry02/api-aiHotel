@@ -2,18 +2,16 @@
 
 namespace App\Modules\User\Models;
 
-use App\Modules\File\Models\File;
 use App\Modules\Invoice\Models\Invoice;
 use App\Modules\Reservation\Models\Reservation;
 use App\Modules\Review\Models\Review;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use OwenIt\Auditing\Auditable;
 use Laravel\Passport\HasApiTokens;
+use OwenIt\Auditing\Auditable;
 
 class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditable
 {
@@ -64,22 +62,22 @@ class User extends Authenticatable implements \OwenIt\Auditing\Contracts\Auditab
     {
         return $this->hasMany(Reservation::class, 'user_id');
     }
+
     public function invoicesPaid(): HasMany
     {
         return $this->hasMany(Invoice::class, 'user_id_paid');
     }
+
     public function invoicesCheckIn(): HasMany
     {
         return $this->hasMany(Invoice::class, 'user_id_check_in');
     }
+
     public function invoicesCheckOut(): HasMany
     {
         return $this->hasMany(Invoice::class, 'user_id_check_out');
     }
-//    public function files(): MorphMany
-//    {
-//        return $this->morphMany(File::class, 'file_model');
-//    }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'user_id');

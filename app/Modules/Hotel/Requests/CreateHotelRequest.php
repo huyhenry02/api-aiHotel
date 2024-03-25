@@ -25,7 +25,7 @@ class CreateHotelRequest extends CommonRequest
         return [
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'nullable|string',
             'room_types' => 'required|array',
             'description' => 'nullable|string|max:255',
         ];

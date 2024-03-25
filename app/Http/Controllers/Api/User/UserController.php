@@ -38,11 +38,6 @@ class UserController extends ApiController
         try {
             DB::beginTransaction();
             $user = $this->userRepo->create($postData);
-            if ($request->hasFile('avatar')) {
-                $file = $request->file('avatar');
-                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
-                $postData['avatar'] = $filePath;
-            }
             $data = fractal($user, new UserTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
@@ -60,11 +55,6 @@ class UserController extends ApiController
             DB::beginTransaction();
             $postData['role_type'] = RoleTypeEnum::CUSTOMER->value;
             $user = $this->userRepo->create($postData);
-            if ($request->hasFile('avatar')) {
-                $file = $request->file('avatar');
-                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
-                $postData['avatar'] = $filePath;
-            }
             $data = fractal($user, new UserTransformer())->toArray();
             DB::commit();
             if (Auth::attempt(['email' => $postData['email'], 'password' => $postData['password']])) {
@@ -88,18 +78,14 @@ class UserController extends ApiController
     public function getMyInfo(): JsonResponse
     {
         $user = Auth::user();
-        $data = fractal($user, new UserTransformer())->parseIncludes(['files','reservations'])->toArray();
+        $data = fractal($user, new UserTransformer())->parseIncludes('reservations')->toArray();
         return $this->respondSuccess($data);
     }
 
     public function getUserInfo(GetUserByUserIdRequest $request): JsonResponse
     {
-        $currentUser = Auth::user();
-        if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
-            return $this->respondError(__('messages.access_denied'));
-        }
         try {
-            $user = $this->fileRepo->findWithFile(modelType: User::class, modelId: $request->user_id);
+            $user = $this->userRepo->find($request->user_id);
             $data = fractal($user, new UserTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (\Exception $e) {
@@ -127,10 +113,6 @@ class UserController extends ApiController
 
     public function updateUser(UpdateUserRequest $request): JsonResponse
     {
-        $currentUser = Auth::user();
-        if ($currentUser->role_type !== RoleTypeEnum::ADMIN->value) {
-            return $this->respondError(__('messages.access_denied'));
-        }
         DB::beginTransaction();
         try {
             $user = $this->userRepo->find($request->user_id);
@@ -142,12 +124,6 @@ class UserController extends ApiController
                 $postData['password'] = bcrypt($postData['password']);
             }
             $user->fill($postData);
-            if ($request->hasFile('avatar')) {
-                $user->files()->delete();
-                $file = $request->file('avatar');
-                $filePath = $this->fileRepo->uploadFile($file, User::class, $user->id, 'avatar');
-                $postData['avatar'] = $filePath;
-            }
             $user->save();
             DB::commit();
             $user = fractal($user, new UserTransformer())->toArray();
@@ -168,7 +144,6 @@ class UserController extends ApiController
         $user = $this->userRepo->find($request->user_id);
         if ($user) {
             $user->delete();
-            $user->files()->delete();
             return $this->respondSuccess(__('messages.delete_successfully'));
         }
         return $this->respondError(__('messages.not_found'));
