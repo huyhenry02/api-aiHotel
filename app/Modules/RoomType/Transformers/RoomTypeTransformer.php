@@ -9,9 +9,6 @@ use League\Fractal\TransformerAbstract;
 
 class RoomTypeTransformer extends TransformerAbstract
 {
-    protected array $availableIncludes = [
-        'files'
-    ];
     public function transform(RoomType $roomType): array
     {
         return [
@@ -20,13 +17,7 @@ class RoomTypeTransformer extends TransformerAbstract
             'code' => $roomType->code ?? '',
             'price' => $roomType->price ?? '',
             'description' => $roomType->description ?? '',
+            'file' => $roomType->file ?? '',
         ];
-    }
-    public function includeFiles(RoomType $roomType): ?Collection
-    {
-        if ($roomType->files) {
-            return $this->collection($roomType->files, new FileTransformer());
-        }
-        return null;
     }
 }

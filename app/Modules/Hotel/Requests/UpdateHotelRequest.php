@@ -27,7 +27,7 @@ class UpdateHotelRequest extends CommonRequest
             'name' => 'string|max:255',
             'address' => 'string|max:255',
             'room_types' => 'array',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'nullable|string',
             'description' => 'nullable|string|max:255',
         ];
     }

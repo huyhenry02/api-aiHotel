@@ -36,7 +36,7 @@ class CreateUserRequest extends CommonRequest
             'password' => 'required|string|max:255',
             'email' => 'required|email|string|unique:users,email',
             'age' => 'required|numeric',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'nullable|string',
         ];
     }
     public function attributes(): Application|array|string|Translator|ContractsApplication|null

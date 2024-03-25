@@ -21,8 +21,4 @@ class HotelRepository extends BaseRepository implements HotelInterface
     {
         return Hotel::class;
     }
-    public function findWithBanner($id): Model|Collection|Builder|array|null
-    {
-        return Hotel::with('files')->find($id);
-    }
 }

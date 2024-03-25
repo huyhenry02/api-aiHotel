@@ -26,14 +26,11 @@ class RoomTypeController extends ApiController
 
     protected RoomTypeInterface $roomTypeRepo;
     protected HotelInterface $hotelRepo;
-    protected FileInterface $fileRepo;
 
-    public function __construct(RoomTypeInterface $roomType, HotelInterface $hotel, FileInterface $fileRepo)
+    public function __construct(RoomTypeInterface $roomType, HotelInterface $hotel)
     {
         $this->roomTypeRepo = $roomType;
         $this->hotelRepo = $hotel;
-        $this->fileRepo = $fileRepo;
-
     }
 
     public function createRoomType(CreateRoomTypeRequest $request): JsonResponse
@@ -42,13 +39,8 @@ class RoomTypeController extends ApiController
         try {
             DB::beginTransaction();
             $roomType = $this->roomTypeRepo->create($postData);
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $filePath = $this->fileRepo->uploadFile($file, RoomType::class, $roomType->id, 'image');
-                $postData['image'] = $filePath;
-            }
             DB::commit();
-            $data = fractal($roomType, new RoomTypeTransformer())->parseIncludes(['files'])->toArray();
+            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             DB::rollBack();
@@ -61,12 +53,8 @@ class RoomTypeController extends ApiController
     {
         try {
             $postData = $request->validated();
-            $roomType = $this->fileRepo->findWithFile(modelType: RoomType::class, modelId: $postData['room_type_id']);
-            if (!$roomType) {
-                return $this->respondError(__('messages.not_found'));
-
-            }
-            $data = fractal($roomType, new RoomTypeTransformer())->parseIncludes(['files'])->toArray();
+            $roomType = $this->roomTypeRepo->find($postData['room_type_id']);
+            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
@@ -84,14 +72,8 @@ class RoomTypeController extends ApiController
                 return $this->respondError(__('messages.not_found'));
             }
             $roomType->fill($postData);
-            if (isset($postData['image'])) {
-                $roomType->files()->delete();
-                $file = $request->file('image');
-                $filePath = $this->fileRepo->uploadFile($file, RoomType::class, $roomType->id, 'image');
-                $postData['image'] = $filePath;
-            }
             $roomType->save();
-            $data = fractal($roomType, new RoomTypeTransformer())->parseIncludes(['files'])->toArray();
+            $data = fractal($roomType, new RoomTypeTransformer())->toArray();
             $response = $this->respondSuccess($data);
             DB::commit();
         } catch (Exception $e) {
@@ -111,7 +93,6 @@ class RoomTypeController extends ApiController
             }
             $roomType->delete();
             $roomType->hotels()->detach();
-            $roomType->files()->delete();
             DB::commit();
             $response = $this->respondSuccess('Room type deleted successfully');
         } catch (Exception $e) {
@@ -132,7 +113,7 @@ class RoomTypeController extends ApiController
             } else {
                 $roomTypes = $this->roomTypeRepo->paginate($perPage);
             }
-            $data = fractal($roomTypes, new RoomTypeTransformer())->parseIncludes(['files'])->toArray();
+            $data = fractal($roomTypes, new RoomTypeTransformer())->toArray();
             $response = $this->respondSuccess($data);
         } catch (Exception $e) {
             $response = $this->respondError($e->getMessage());
